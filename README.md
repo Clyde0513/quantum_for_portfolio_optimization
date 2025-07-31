@@ -1,6 +1,6 @@
 # Quantum Portfolio Optimization
 
-This project implements a quantum approach to portfolio optimization using Variational Quantum Eigensolver (VQE) and PennyLane. The code is inspired by the methodology described in [The Wiser's Quantum Portfolio Optimization](https://www.thewiser.org/quantum-portfolio-optimization).
+This project implements a quantum approach to portfolio optimization using Variational Quantum Eigensolver (VQE) and PennyLane. The code is inspired by the methodology described in [The Wiser's Quantum Portfolio Optimization](https://www.thewiser.org/quantum-portfolio-optimization). This is also a Hackathon for Wiser.
 
 ## Overview
 
