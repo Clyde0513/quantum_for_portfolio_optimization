@@ -28,7 +28,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 
 ### Enhanced VQE Implementation
 
-- **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity; Also utilizing LIGHTINING.QUBIT instead of DEFAULT.QUBIT
+- **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity; Also utilizing LIGHTNING.QUBIT instead of DEFAULT.QUBIT
 - **Multiple Restarts:** 4 restarts × 200 iterations each for robust optimization
 - **Adative Learning Rate:** Use adaptive learning rate of 0.05 during optimization
 - **Adaptive Penalties:** Dynamic constraint weight adjustment during optimization
