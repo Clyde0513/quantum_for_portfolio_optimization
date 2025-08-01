@@ -314,3 +314,18 @@ for i, (solution, freq) in enumerate(counts.most_common(5)):
     cost = classical_objective(np.array(solution))
     violation = sum([int(x) for x in solution]) != N
     print(f" {i+1}. {[int(x) for x in solution]} (freq: {freq:4d}, cost: {cost:7.2f}, feasible: {not violation})")
+    
+# Save top quantum solutions data
+top_quantum_solutions = []
+for i, (solution, freq) in enumerate(counts.most_common(5)):
+    cost = classical_objective(np.array(solution))
+    top_quantum_solutions.append((cost, freq))
+    
+print("\nTop 5 Quantum Solutions Data for Plotting:")
+for i, (cost, freq) in enumerate(top_quantum_solutions):
+    print(f"Solution {i+1}: Cost = {cost:.2f}, Frequency = {freq}")
+    
+# Save the top quantum solutions for further analysis or plotting
+import json
+with open("top_quantum_solutions.json", "w") as f:
+    json.dump(top_quantum_solutions, f)

@@ -1,38 +1,39 @@
-# Quantum Portfolio Optimization
+# Quantum Portfolio Optimization (for explore step1-5.py)
 
 ## **Performance Metrics:**
 
-- **Problem Size:** 6 bonds, target basket size: 3
-- **VQE Convergence:** Successfully optimized from -28,890 to -42,588 over 750 iterations (3 restarts × 250)
-- **Quantum Solution:** [1,0,0,1,1,0] with cost -24,329.65 (constraint satisfaction)
-- **Classical Benchmark:** [1,0,1,0,1,1] with cost -24,354.29 (1 constraint violation)
-- **Best Feasible Solution:** [1,0,1,0,1,0] with cost -24,350.92 (exactly 3 bonds)
+- **Problem Size:** 12 bonds, target basket size: 6 (Used to be 3)
+- **VQE Convergence:** Optimized from -111,439 to -111,943 over 2,500 iterations (5 restarts × 500)
+- **Quantum Solution:** [1,1,0,0,0,1,0,0,1,0,1,1] with cost -84,412.33 (onstraint satisfaction)
+- **Classical Benchmark:** [0,1,0,0,0,0,0,1,1,1,1,1] with cost -84,444.28 (constraint satisfaction)
+- **Performance Result:** NEAR TIE - Difference: 0.04% (within 1% tolerance)
 
 ### **Constraint Analysis:**
 
 | Solution | Basket Size | Cash Flow | Characteristic | Total Violation |
 |----------|-------------|-----------|----------------|-----------------|
-| **Quantum** | 3 | 0.0120 | 0.7051 | **0.0000** |
-| **Classical** | 4 (violation: 1) | 0.0158 | 0.6313 | **1.0000** |
-| **Best Feasible** | 3 | 0.0126 | 0.6073 | **0.0000** |
+| **Quantum** | 6 | 0.0300 | 0.8662 | **0.0000** |
+| **Classical** | 6 | 0.0364 | 0.8328 | **0.0000** |
 
-- **Quantum Solution:** constraint satisfaction (0 violations)
-- **Classical Solution:** Violates basket size constraint (1 violation)
-- **Advantage Type:** Constraint satisfaction with competitive objective value
+- **Quantum Solution:** Perfect constraint satisfaction (0 violations)
+- **Classical Solution:** Perfect constraint satisfaction (0 violations)
+- **Advantage Type:** Competitive performance withs constraint handling
 
 ### **Enhanced VQE Implementation:**
 
-- Increased circuit depth (8 layers) for better expressivity
-- Added multiple random restarts (3 restarts × 250 iterations each)
-- Improved optimization parameters and penalty weights
-- Better sampling strategy (20,000 shots)
-- Analyzed top 20 solutions for constraint feasibility
+- Doubled problem size from 6 to 12 bonds for more realistic complexity
+- Increased circuit depth (QAOA with 4 layers) for better expressivity
+- Added multiple random restarts (5 restarts × 500 iterations each)
+- Adaptive penalty adjustment during optimization
+- Sampling strategy (50,000 shots)
+- Greedy post-processing for feasibility improvement
 
-### **Aggressive Penalty Parameter Tuning:**
+### **Adaptive Penalty Parameter System:**
 
-- **Basket Size Penalty:** Increased from 200 → 2,000 (10x increase)
-- **Characteristic Penalty:** Increased from 30 → 300 (10x increase)
-- **Cash Flow Penalties:** Increased to 500 each
+- **Initial Basket Size Penalty:** 2,000 with 1.5x adaptive increase
+- **Initial Characteristic Penalty:** 300 with 1.2x adaptive increase
+- **Initial Cash Flow Penalties:** 500 each with 1.2x adaptive increase
+- **Dynamic adjustment:** Every 50 iterations based on constraint violations
 
 ### **Benchmarking:**
 
@@ -52,7 +53,7 @@
 
 **Task 3 (Quantum Program):**
 
-- Implemented VQE with StronglyEntanglingLayers ansatz
+- Implemented VQE with QAOA and adaptive penalties (uses StronglyEntanglingLayers ansatz in step1-5.py but this isn't good for QUBO problems)
 - Hamiltonian construction and optimization
 
 **Task 4 (Solve with Quantum):**
@@ -78,7 +79,7 @@
 
 - Penalty parameter tuning needed for better constraint satisfaction
 - Could benefit from hybrid classical-quantum preprocessing
-- Larger problem sizes would better demonstrate quantum advantage
+- Larger problem sizes would better demonstrate quantum advantage, in theory
 
 ## **Scalability Analysis**
 
@@ -94,14 +95,8 @@
 - **Quantum advantage:** Expected at 20+ qubits where classical becomes intractable
 - **Hybrid approaches:** Combine quantum optimization with classical preprocessing
 
-### **Improvements (hopefully it'll allow for different bonds)**
+### **Research Inquiries**
 
-1. **Multiple VQE Runs:** Average results over multiple random initializations
-2. **Advanced Penalty Tuning:** Systematic approach to find optimal λ values
-3. **Smart Solution Selection:** Analyze multiple solutions for feasibility
-4. **Noise Modeling:** Add realistic quantum hardware noise models
-
-5. **QAOA Implementation:** Compare VQE with Quantum Approximate Optimization Algorithm
-6. **Real Market Data:** Use actual stock/bond data instead of synthetic
-7. **Risk Models:** Implement more sophisticated risk measures
-8. **Portfolio Rebalancing:** Dynamic optimization over time periods
+1. **Real Market Data:** Use actual stock/bond data instead of synthetic
+2. **Risk Models:** Implement more sophisticated risk measures
+3. **Portfolio Rebalancing:** Dynamic optimization over time periods
