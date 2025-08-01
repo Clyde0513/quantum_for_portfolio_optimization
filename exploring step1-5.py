@@ -324,8 +324,3 @@ for i, (solution, freq) in enumerate(counts.most_common(5)):
 print("\nTop 5 Quantum Solutions Data for Plotting:")
 for i, (cost, freq) in enumerate(top_quantum_solutions):
     print(f"Solution {i+1}: Cost = {cost:.2f}, Frequency = {freq}")
-    
-# Save the top quantum solutions for further analysis or plotting
-import json
-with open("top_quantum_solutions.json", "w") as f:
-    json.dump(top_quantum_solutions, f)
