@@ -1,6 +1,6 @@
 # Quantum Portfolio Optimization 
 
-(**for exploreing part 2 of step1-5.py**)
+(**for exploring part 2 of step1-5.py**)
 
 It's different for the exploring part 1 of step1-5.py because we're just experimenting
 
@@ -28,7 +28,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 
 ### Enhanced VQE Implementation
 
-- **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity
+- **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity; Also utilizing LIGHTINING.QUBIT instead of DEFAULT.QUBIT
 - **Multiple Restarts:** 4 restarts × 200 iterations each for robust optimization
 - **Adative Learning Rate:** Use adaptive learning rate of 0.05 during optimization
 - **Adaptive Penalties:** Dynamic constraint weight adjustment during optimization
