@@ -168,6 +168,13 @@ Top 5 quantum solutions:
  3. [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0] (freq:   79, cost: -44293.51, feasible: False)
  4. [0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1] (freq:   79, cost: -84113.14, feasible: False)
  5. [1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1] (freq:   76, cost: -84109.82, feasible: True)
+
+Top 5 Quantum Solutions Data for Plotting:
+Solution 1: Cost = -72337.61, Frequency = 140
+Solution 2: Cost = -84202.21, Frequency = 80
+Solution 3: Cost = -44293.51, Frequency = 79
+Solution 4: Cost = -84113.14, Frequency = 79
+Solution 5: Cost = -84109.82, Frequency = 76
  ```
 
 ## Example Output for steps1-5.py
