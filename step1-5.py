@@ -153,6 +153,8 @@ def ansatz(params, wires):
     # Apply parameterized layers
     qml.StronglyEntanglingLayers(params, wires=wires)
 
+# Define the VQE circuit
+# Using the ansatz and Hamiltonian cost
 @qml.qnode(dev)
 def circuit(params):
     ansatz(params, wires=range(n))
