@@ -38,8 +38,8 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 ## Scalability Analysis
 
 - **Current Implementation:**
-  - **12 qubits:** Substantial classical simulation requirements
-  - **4,096 possible solutions:** Classical enumeration becomes challenging
+  - **16 qubits:** Substantial classical simulation requirements
+  - **65,536 possible solutions:** Classical enumeration becomes challenging
   - **Complexity:** Exponential classical search space vs polynomial VQE optimization
 
 - **Scaling Potential:**
@@ -316,7 +316,7 @@ Solution 5: Cost = -83925.36, Frequency = 84
 
 ### QAOA Implementation
 
-- Quantum Approximate Optimization Algorithm with 4 layers
+- Quantum Approximate Optimization Algorithm with 4 layers with lightning.qubit
 - Optimized parameter initialization and learning rates
 - Robust multi-restart strategy for global optimization
 
@@ -334,8 +334,8 @@ Solution 5: Cost = -83925.36, Frequency = 84
 
 ## Technical Implementation
 
-- **Quantum Framework:** PennyLane with default.qubit simulator
-- **Optimization:** Adam optimizer with adaptive learning rates
+- **Quantum Framework:** PennyLane with lightning.qubit simulator
+- **Optimization:** Adam optimizer with adaptive learning rate of 0.05
 - **Sampling:** 50,000 shots for high-precision measurements
 - **Classical Benchmark:** Simulated annealing with basin hopping
 - **Constraint Handling:** Penalty method with adaptive scaling
