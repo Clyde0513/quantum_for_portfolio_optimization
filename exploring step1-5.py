@@ -315,7 +315,7 @@ for i, (solution, freq) in enumerate(counts.most_common(5)):
     violation = sum([int(x) for x in solution]) != N
     print(f" {i+1}. {[int(x) for x in solution]} (freq: {freq:4d}, cost: {cost:7.2f}, feasible: {not violation})")
     
-# Save top quantum solutions data
+# Save top 5 quantum solutions data
 top_quantum_solutions = []
 for i, (solution, freq) in enumerate(counts.most_common(5)):
     cost = classical_objective(np.array(solution))

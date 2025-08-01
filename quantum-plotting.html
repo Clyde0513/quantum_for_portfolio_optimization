@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Top 5 Quantum Solutions</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="quantumSolutionsChart" width="400" height="100"></canvas>
+  <script>
+    const ctx = document.getElementById('quantumSolutionsChart').getContext('2d');
+    const chartConfig = {
+      type: 'bar',
+      data: {
+        labels: ['Solution 1', 'Solution 2', 'Solution 3', 'Solution 4', 'Solution 5'],
+        datasets: [
+          {
+            label: 'Cost',
+            data: [-72337.61, -84202.21, -44293.51, -84113.14, -84109.82], // Replace with actual top_quantum_solutions costs
+            backgroundColor: '#2196F3',
+            borderColor: '#1976D2',
+            borderWidth: 1
+          },
+          {
+            label: 'Frequency',
+            data: [140,80,79,79,76], // Replace with actual top_quantum_solutions frequencies
+            backgroundColor: '#FF9800',
+            borderColor: '#F57C00',
+            borderWidth: 1,
+            yAxisID: 'y-frequency'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Top 5 Quantum Solutions'
+          },
+          legend: {
+            position: 'top'
+          }
+        },
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: 'Cost'
+            },
+            beginAtZero: false
+          },
+          'y-frequency': {
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Frequency'
+            },
+            beginAtZero: true
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Solution'
+            }
+          }
+        }
+      }
+    };
+    new Chart(ctx, chartConfig);
+  </script>
+</body>
+</html>
