@@ -4,10 +4,10 @@ from collections import Counter
 import scipy.optimize as opt
 import time
 
-print("=== Enhanced Quantum Portfolio Optimization ===\n")
+print("=== Exploring (part 1) Quantum Portfolio Optimization ===\n")
 
-# 1. Increase Problem Size
-n = 12  # Increased number of bonds for quantum advantage
+# 1. Optimize Problem Size for Memory Constraints
+n = 12
 np.random.seed(42)
 
 # Market Parameters
@@ -128,8 +128,14 @@ Hamiltonian_cost = qml.Hamiltonian(coefficients, obs)
 print(f"\nHamiltonian constructed with {len(coefficients)} terms")
 
 # 4. VQE with QAOA Ansatz and Adaptive Penalties
-dev = qml.device("default.qubit", wires=n)
-p = 4  # QAOA layers
+try:
+    dev = qml.device("lightning.qubit", wires=n)
+    print("Using lightning.qubit device for CPU optimization")
+except:
+    dev = qml.device("default.qubit", wires=n)
+    print("Using default.qubit device")
+
+p = 4 # QAOA layers (reduced from 6 to save memory and computation)
 
 def qaoa_ansatz(params, wires):
     gammas = params[:p]
@@ -190,7 +196,11 @@ for restart in range(num_restarts):
             print(f" Iteration {it:3d}, Cost: {cost:8.4f}")
         # Adaptive penalties every 50 iterations
         if it % 50 == 0 and it > 0:
-            dev_temp = qml.device("default.qubit", wires=n, shots=100)
+            try:
+                dev_temp = qml.device("lightning.qubit", wires=n, shots=100)
+            except:
+                dev_temp = qml.device("default.qubit", wires=n, shots=100)
+            
             # Sample from the circuit to get a solution
             # qml.set_device(dev_temp)
             @qml.qnode(dev_temp)
@@ -215,7 +225,12 @@ print(f"\nBest VQE cost: {best_cost:.4f}")
 
 # 5. Sample and Post-process
 print("\nSampling from optimized circuit...")
-dev_sample = qml.device("default.qubit", wires=n, shots=50000)  # More shots for larger n
+try:
+    dev_sample = qml.device("lightning.qubit", wires=n, shots=50000)
+    print("Using lightning.qubit for sampling")
+except:
+    dev_sample = qml.device("default.qubit", wires=n, shots=50000)
+    print("Using default.qubit for sampling")
 
 @qml.qnode(dev_sample)
 def sample_circuit(params):

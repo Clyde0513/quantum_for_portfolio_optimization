@@ -1,4 +1,4 @@
-# Quantum Portfolio Optimization (for explore step1-5.py)
+# Quantum Portfolio Optimization (for explore pat 1 of step1-5.py)
 
 ## **Performance Metrics:**
 
