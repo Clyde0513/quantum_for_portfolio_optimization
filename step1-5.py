@@ -343,3 +343,8 @@ for i, (solution, freq) in enumerate(counts.most_common(5)):
     cost = classical_objective(np.array(solution))
     violation = sum([int(x) for x in solution]) != N  # Simplified violation check
     print(f"  {i+1}. {[int(x) for x in solution]} (freq: {freq:4d}, cost: {cost:7.2f}, feasible: {not violation})")
+
+print(f"\nTop 5 classical solutions:")
+for i, (solution, cost) in enumerate(sorted(feasible_solutions, key=lambda x: x[1])[:5]):
+    violation = sum([int(x) for x in solution]) != N  # Simplified violation check
+    print(f"  {i+1}. {[int(x) for x in solution]} (cost: {cost:7.2f}, feasible: {not violation})")

@@ -61,6 +61,25 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 ## More Examples
 
 ```
+ === Quantum Portfolio Optimization ===
+
+Bond amounts if selected (x_c): [2.54187582 3.00880099 1.7043105  3.56029985 2.21471029 2.21633431]
+Target basket size: 3
+Cash flow range: [0.0100, 0.0500]
+Characteristic range: [0.6000, 1.0000]
+
+Building QUBO formulation...
+Cash flow coefficients (a_cf): [0.00476531 0.00635328 0.00508813 0.00443377 0.00277605 0.00315832]
+QUBO matrix Q shape: (6, 6)
+QUBO vector q shape: (6,)
+
+Hamiltonian constructed with 58 terms
+
+Starting VQE optimization with multiple restarts...
+
+--- Restart 1/3 ---
+C:\Users\iclyd\anaconda3\envs\vqe\Lib\site-packages\pennylane\ops\op_math\composite.py:211: FutureWarning: functools.partial will be a method descriptor in future Python versions; wrap it in staticmethod() if you want to preserve the old behavior
+  return self._math_op(math.vstack(eigvals), axis=0)
   Iteration   0, Cost: -28890.1530
   Iteration  50, Cost: -41160.7068
   Iteration 100, Cost: -42227.3638
@@ -154,6 +173,13 @@ Top 5 quantum solutions:
   3. [0, 1, 1, 1, 1, 1] (freq:   32, cost: -20264.35, feasible: False)
   4. [1, 0, 1, 1, 1, 1] (freq:   17, cost: -20319.61, feasible: False)
   5. [0, 1, 1, 1, 1, 0] (freq:    8, cost: -24266.94, feasible: False)
+
+Top 5 classical solutions:
+  1. [1, 0, 1, 0, 1, 0] (cost: -24350.92, feasible: True)
+  2. [1, 0, 0, 0, 1, 1] (cost: -24345.27, feasible: True)
+  3. [1, 1, 1, 0, 0, 0] (cost: -24332.97, feasible: True)
+  4. [1, 1, 0, 0, 0, 1] (cost: -24331.21, feasible: True)
+  5. [1, 0, 0, 1, 1, 0] (cost: -24329.65, feasible: True)
 ```
 
 ## References
