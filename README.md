@@ -47,6 +47,31 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
   - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable
   - **Hybrid approaches:** Quantum sampling with classical post-processing proves effective
 
+**Task 1 (Mathematical Review):**
+
+- Identified binary decision variables, linear constraints, and quadratic objective
+- Understanding of the portfolio optimization formulation from the challenge image
+
+**Task 2 (Quantum Formulation):**
+
+- Converted constrained problem to unconstrained using penalty methods
+- Proper QUBO formulation with all constraints included
+
+**Task 3 (Quantum Program):**
+
+- Implemented VQE with QAOA ansatz (4 layers) and adaptive penalties
+- Hamiltonian construction and optimization
+
+**Task 4 (Solve with Quantum):**
+
+- Optimized and found quantum solutions (see above section for enhanced VQE)
+- Proper sampling and result interpretation
+
+**Task 5 (Classical Comparison):**
+
+- Implemented classical brute-force benchmark with simulated annealing with basin hopping algorithm
+- Performance comparison with releveant metrics (see examples below)
+
 ## How to Run
 
 1. Install dependencies:
@@ -331,6 +356,21 @@ Solution 5: Cost = -83925.36, Frequency = 84
 - Detailed constraint satisfaction metrics
 - Classical benchmark comparison with simulated annealing
 - Cost ratio analysis and competitive assessment
+
+### **Algorithm Performance:**
+
+**Strengths:**
+
+- VQE shows good convergence behavior
+- Quantum algorithm explores different solution regions
+- Handles multiple constraints simultaneously
+- Proper constraint violation analysis
+
+**Areas for Improvement:**
+
+- Penalty parameter tuning needed for better constraint satisfaction
+- Could benefit from hybrid classical-quantum preprocessing
+- Larger problem sizes would better demonstrate quantum advantage, in theory
 
 ## Technical Implementation
 
