@@ -9,7 +9,7 @@ import torch
 print("=== Exploring (part 2) of Quantum Portfolio Optimization... ===\n")
 
 # 1. Optimized Problem Setup
-n = 16  # Number of bonds
+n = 20  # Number of bonds
 np.random.seed(42)
 
 # Market Parameters
@@ -19,7 +19,7 @@ i_c = np.random.uniform(0.2, 0.8, size=n)
 delta_c = np.random.uniform(0.1, 0.5, size=n)
 
 # Global Parameters
-N = 8  # Target basket size
+N = 10  # Target basket size
 rc_min = 0.01
 rc_max = 0.05
 mvb = 1.0
@@ -381,4 +381,13 @@ elif abs(best_quantum_cost - best_classical_cost) / best_classical_cost < 0.02:
     print("COMPETITIVE: Near-optimal performance")
 else:
     print("Classical solution dominates")
+    
+# Save top 10 quantum solutions data
+top_quantum_solutions = []
+for i, (solution, freq) in enumerate(counts.most_common(10)):
+    cost = classical_objective(np.array(solution))
+    top_quantum_solutions.append((cost, freq))
 
+print("\nTop 10 Quantum Solutions Data for Plotting:")
+for i, (cost, freq) in enumerate(top_quantum_solutions):
+    print(f"Solution {i+1}: Cost = {cost:.2f}, Frequency = {freq}")
