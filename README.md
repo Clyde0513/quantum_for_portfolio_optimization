@@ -49,6 +49,8 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 | **Quantum**      | 10          | 0.0459    | 1.3502         | **0.0000**      |-220550 |
 | **Classical**    | 10          | 0.0416    | 1.6062         | **0.0062**      |-220360 |
 
+- **Lightning.qubit Vs Lightning.gpu Speedup:** Lightning.gpu with 20 qubits takes roughly 1700 seconds than Lightning.qubit with 20 qubits which took roughly 8300 seconds. So fast!
+- **Using Significant Gates & recommended hardware configs:** So that we speedup the process even more and made sure to recommend optimal configuration based on hardware
 
 ### Enhanced VQE Implementation
 
