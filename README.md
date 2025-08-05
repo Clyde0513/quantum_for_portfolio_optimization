@@ -33,6 +33,13 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 | **Quantum**      | 10          | 0.0405    | 1.3335         | **0.1335**      |-220171|
 | **Classical**    | 10          | 0.0487    | 1.9542         | **1.7542**      |-219163|
 
+### Constraint Analysis of 20 bonds, basket size 10 (This time we increased the ranges for cash flow and characteristic by a bit, so as you can see, quantum still beats classical by violation!)
+
+| Solution         | Basket Size | Cash Flow | Characteristic | Total Violation | Cost |
+|------------------|-------------|-----------|----------------|-----------------|------|
+| **Quantum**      | 10          | 0.0417    | 1.3150         | **0.0000**      |-220570|
+| **Classical**    | 10          | 0.0464    | 1.7846         | **0.1846**      |-220112|
+
 ### Enhanced VQE Implementation
 
 - **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity; Also utilizing LIGHTNING.QUBIT instead of DEFAULT.QUBIT
@@ -224,8 +231,6 @@ QUANTUM ADVANTAGE: Better constraint satisfaction
 ## Example output for exploring part 2 of steps1-5.py [THIS IS WITH 20 bonds (qubits) and 10 target basket size]
 ```text
 === Exploring (part 2) of Quantum Portfolio Optimization... ===
-
-
 Problem size: 20 bonds, Target basket: 10
 Market parameters (m): [0.68727006 0.97535715 0.86599697 0.79932924 0.57800932 0.57799726
  0.52904181 0.93308807 0.80055751 0.85403629 0.51029225 0.98495493
@@ -358,6 +363,143 @@ Solution 7: Cost = -215849.12, Frequency = 3
 Solution 8: Cost = -217369.29, Frequency = 3
 Solution 9: Cost = -219024.24, Frequency = 3
 Solution 10: Cost = -196294.18, Frequency = 3
+```
+
+## Example Output for exploring part 2 of steps1-5.py (This time we increase the ranges for cash flow and characteristic)
+```text
+=== Exploring (part 2) of Quantum Portfolio Optimization... ===
+Problem size: 20 bonds, Target basket: 10
+Market parameters (m): [0.68727006 0.97535715 0.86599697 0.79932924 0.57800932 0.57799726
+ 0.52904181 0.93308807 0.80055751 0.85403629 0.51029225 0.98495493
+ 0.91622132 0.60616956 0.59091248 0.59170225 0.65212112 0.76237822
+ 0.71597251 0.64561457]
+
+Market parameters (M): [1.61185289 1.13949386 1.29214465 1.36636184 1.45606998 1.78517596
+ 1.19967378 1.51423444 1.59241457 1.04645041 1.60754485 1.17052412
+ 1.06505159 1.94888554 1.96563203 1.80839735 1.30461377 1.09767211
+ 1.68423303 1.44015249]
+
+Risk characteristics (i_c): [0.27322294 0.49710615 0.22063311 0.74559224 0.35526799 0.59751337
+ 0.38702665 0.51204081 0.52802617 0.31091267 0.78175078 0.66507969
+ 0.76369936 0.73689641 0.55873999 0.75312454 0.2530955  0.31758972
+ 0.22713637 0.3951982 ]
+
+Bond amounts if selected (x_c): [1.87984804 3.53041631 1.25914562 3.1827627  2.19725148 1.85365908
+ 2.92917525 1.71679936 5.11701216 1.17729936 1.57990907 4.59654824
+ 8.21807866 1.57568581 1.50185981 1.71707986 1.10795421 4.16596882
+ 1.9374733  3.5559606 ]
+
+Target basket size: 10
+
+Cash flow range: [0.0100, 0.0700]
+Characteristic range: [0.6, 1.6]
+Building QUBO formulation...
+QUBO matrix Q shape: (20, 20)
+Building Optimized Hamiltonian...
+Hamiltonian constructed with 231 terms
+Using lightning.qubit: Optimized CPU
+Main computation device: lightning.qubit
+
+Starting Optimized-Accelerated VQE training...
+
+--- Restart 1/4 ---
+radients are computed only with regards to the trainable parameters of the circuit.
+
+ Mark the parameters of the measured observables as non-trainable to silence this warning.
+  warnings.warn(
+Iteration   0, Cost: -305904.8654
+ Iteration  50, Cost: -305694.9734
+ Iteration 100, Cost: -305911.9845
+ Iteration 150, Cost: -305870.0647
+ Final cost: -305800.2998
+
+--- Restart 2/4 ---
+ Iteration   0, Cost: -305928.0308
+ Iteration  50, Cost: -305870.0161
+ Iteration 100, Cost: -305721.8220
+ Iteration 150, Cost: -305891.6850
+ Final cost: -305825.7073
+
+--- Restart 3/4 ---
+ Iteration   0, Cost: -305886.4285
+ Iteration  50, Cost: -305891.2708
+ Iteration 100, Cost: -305686.4281
+ Iteration 150, Cost: -305844.9364
+ Final cost: -305957.4939
+
+--- Restart 4/4 ---
+ Iteration   0, Cost: -305866.9482
+ Iteration  50, Cost: -305753.4372
+ Iteration 100, Cost: -305849.4151
+ Iteration 150, Cost: -305924.3343
+ Final cost: -304715.7024
+
+Training completed in 7987.35 seconds
+Best VQE cost: -305957.4939
+
+Optimized-accelerated sampling...
+Using lightning.qubit: Optimized CPU
+Sampling device: lightning.qubit
+Sampling completed in 1.27 seconds
+
+Top quantum solutions (post-processed):
+  1. [0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1] (cost: -218947.17, freq:    4)
+  2. [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1] (cost: -220570.18, freq:    4)
+  3. [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0] (cost: -219759.18, freq:    4)
+  4. [0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1] (cost: -220470.70, freq:    4)
+  5. [1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1] (cost: -219900.91, freq:    4)
+  6. [1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1] (cost: -220171.90, freq:    3)
+  7. [0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1] (cost: -218246.79, freq:    3)
+  8. [0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1] (cost: -220341.23, freq:    3)
+  9. [0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1] (cost: -218402.34, freq:    3)
+ 10. [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0] (cost: -219408.03, freq:    3)
+
+Classical benchmark...
+
+=== Optimized Performance Summary (with lightning) ===
+Hardware: lightning.qubit
+Problem size: 20 bonds, Target basket: 10
+QAOA layers: 4, Restarts: 4
+
+Timing:
+  Training: 7987.35s
+  Sampling: 1.27s
+  Classical: 0.11s
+  Total quantum: 7988.62s
+
+Results:
+  Best quantum cost: -220570.1805
+  Best classical cost: -220112.0406
+  Quantum advantage: 0.998x
+
+Quantum Solution:
+  Portfolio: [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1]
+  Basket size: 10 (target: 10)
+  Cash flow: 0.0417 (range: [0.0100, 0.0700])
+  Characteristic: 1.3150 (range: [0.6000, 1.6000])
+  Constraint violation: 0.0000
+
+Classical Solution:
+  Portfolio: [1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1]
+  Basket size: 10 (target: 10)
+  Cash flow: 0.0464 (range: [0.0100, 0.0700])
+  Characteristic: 1.7846 (range: [0.6000, 1.6000])
+  Constraint violation: 0.1846
+
+=== Final Assessment ===
+QUANTUM ADVANTAGE: Better constraint satisfaction
+
+Top 10 Quantum Solutions Data for Plotting:
+Solution 1: Cost = -207074.25, Frequency = 4
+Solution 2: Cost = -153208.36, Frequency = 4
+Solution 3: Cost = -203917.21, Frequency = 4
+Solution 4: Cost = -208561.26, Frequency = 4
+Solution 5: Cost = -190803.79, Frequency = 4
+Solution 6: Cost = -191815.69, Frequency = 3
+Solution 7: Cost = -218246.79, Frequency = 3
+Solution 8: Cost = -213727.83, Frequency = 3
+Solution 9: Cost = -218402.34, Frequency = 3
+Solution 10: Cost = -207506.40, Frequency = 3
 ```
 
 ## Example Output for exploring part 1 of steps1-5.py

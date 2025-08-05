@@ -21,7 +21,7 @@ delta_c = np.random.uniform(0.1, 0.5, size=n)
 # Global Parameters
 N = 10  # Target basket size
 rc_min = 0.01
-rc_max = 0.05
+rc_max = 0.07
 mvb = 1.0
 
 # Risk Characteristics
@@ -50,7 +50,7 @@ print()
 print(f"Target basket size: {N}")
 print()
 print(f"Cash flow range: [{rc_min:.4f}, {rc_max:.4f}]")
-print(f"Characteristic range: [0.6, 1.2]")
+print(f"Characteristic range: [0.6, 1.6]")
 
 
 # 2. Build QUBO Formulation
@@ -83,7 +83,7 @@ Q += lambda_RClo * np.outer(a_cf, a_cf)
 q += -2 * lambda_RClo * rc_min * a_cf
 
 # Characteristic Bounds
-b_up = 1.2
+b_up = 1.6
 b_lo = 0.6
 char_coeff = beta[:, j] * i_c
 Q += lambda_char * np.outer(char_coeff, char_coeff)
@@ -172,7 +172,7 @@ def lightning_optimized_qaoa(params, wires):
     
     # QAOA layers with optimized gate application
     for layer in range(p):
-        # Cost Hamiltonian - apply significant interactions only
+        # Cost Hamiltonian - apply significant interactions only (problem specific)
         for i in range(n):
             for j in range(i + 1, n):
                 if abs(Q[i, j]) > 1e-8:
@@ -187,7 +187,7 @@ def lightning_optimized_qaoa(params, wires):
         
         # Mixer Hamiltonian
         for i in range(n):
-            qml.RX(2 * betas[layer], wires=i)
+            qml.RX(2 * betas[layer], wires=i) # Maintains superposition
 
 @qml.qnode(dev)
 def circuit(params):
