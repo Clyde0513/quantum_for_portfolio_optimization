@@ -21,14 +21,14 @@ def setup_optimized_backend(n_qubits, shots=None):
     
     # Try GPU first
     try:
-        import cupy as cp
-        gpu_count = cp.cuda.runtime.getDeviceCount()
-        if gpu_count > 0:
-            try:
-                device = qml.device('lightning.gpu', **device_kwargs)
-                print(f"Using GPU acceleration with {gpu_count} GPU(s)")
-                return device, "lightning.gpu"
-            except Exception as e:
+        # import cupy as cp
+        # gpu_count = cp.cuda.runtime.getDeviceCount()
+        # if gpu_count > 0:
+        try:
+            device = qml.device('lightning.gpu', **device_kwargs)
+            # print(f"Using GPU acceleration with {gpu_count} GPU(s)")
+            return device, "lightning.gpu"
+        except Exception as e:
                 print(f"GPU backend failed: {str(e)[:50]}...")
     except ImportError:
         print("GPU libraries not available")
@@ -202,11 +202,12 @@ class ResourceManager:
         
         return config
 
-# 6. Enhanced Problem Setup (same as original but with optimizations)
+# 6. Enhanced Problem Setup (same as part 2 but with optimizations)
+
 n = 20
 np.random.seed(42)
 
-# Market Parameters (same as original)
+# Market Parameters (same as part 2)
 m = np.random.uniform(0.5, 1.0, size=n)
 M = np.random.uniform(1.0, 2.0, size=n)
 i_c = np.random.uniform(0.2, 0.8, size=n)
@@ -228,13 +229,30 @@ lambda_char = 300.0
 
 x_c = (m + np.minimum(M, i_c)) / (2 * delta_c)
 
+print(f"\nProblem size: {n} bonds, Target basket: {N}")
+
+print(f"Market parameters (m): {m}")
+print()
+print(f"Market parameters (M): {M}")
+print()
+print(f"Risk characteristics (i_c): {i_c}")
+print()
+print(f"Bond amounts if selected (x_c): {x_c}")
+print()
+print(f"Target basket size: {N}")
+print()
+print(f"Cash flow range: [{rc_min:.4f}, {rc_max:.4f}]")
+print(f"Characteristic range: [0.6, 1.6]")
+
+
 print(f"Problem: {n} bonds → {N} portfolio")
 
-# 7. QUBO Construction (same as original)
+# 7. QUBO Construction (same as part 2)
 Q = np.zeros((n, n))
 q = np.zeros(n)
+print("Building QUBO formulation...")
 
-# Build QUBO (same logic as original)
+# Build QUBO (same logic as part 2)
 l, j = 0, 0
 w = rho[l, j]
 k_target_lj = k_target[l, j]
@@ -264,6 +282,7 @@ Q += lambda_char * np.outer(char_coeff, char_coeff)
 q += -2 * lambda_char * b_lo * char_coeff
 
 Q = (Q + Q.T) / 2
+print(f"QUBO matrix Q shape: {Q.shape}")
 
 def classical_objective(x):
     return x.T @ Q @ x + q.T @ x
@@ -433,7 +452,24 @@ for i, (solution, freq) in enumerate(counts.most_common(10)):
     
     print(f"  {i+1:2d}. Cost: {cost:8.2f}, Freq: {freq:4d}")
 
-# 13. Performance Summary
+# 13. Classical Benchmark
+print("\nClassical benchmark...")
+classical_start = time.time()
+
+def sa_objective(x):
+    return classical_objective(np.round(x))
+
+x0 = np.random.randint(0, 2, n)
+result = opt.basinhopping(
+    sa_objective, x0, niter=100, T=1.0, stepsize=0.5,
+    minimizer_kwargs={"method": "L-BFGS-B", "bounds": [(0, 1)] * n}
+)
+classical_time = time.time() - classical_start
+
+best_classical_solution = np.round(result.x).astype(int)
+best_classical_cost = classical_objective(best_classical_solution)
+
+# 14. Performance Summary
 performance_summary = monitor.stop()
 print(f"\n=== Hardware-Optimized Performance Summary ===")
 print(f"Backend: {backend_name}")
@@ -443,7 +479,13 @@ print(f"Memory usage: {circuit_builder.memory_estimate:.2f} MB")
 print(f"\nTiming:")
 print(f"  Training: {training_time:.2f}s")
 print(f"  Sampling: {sampling_time:.2f}s")
-print(f"  Total: {training_time + sampling_time:.2f}s")
+print(f"  Classical: {classical_time:.2f}s")
+print(f"  Total quantum: {training_time + sampling_time:.2f}s")
+
+print(f"\nResults:")
+print(f"  Best quantum cost: {best_quantum_cost:.4f}")
+print(f"  Best classical cost: {best_classical_cost:.4f}")
+print(f"  Quantum advantage: {best_classical_cost/best_quantum_cost:.3f}x")
 
 print(f"\nSystem Performance:")
 if isinstance(performance_summary, dict):
@@ -455,7 +497,7 @@ print(f"\nOptimization Stats:")
 print(f"  {cache.stats()}")
 print(f"  Best quantum cost: {best_quantum_cost:.4f}")
 
-# 14. Solution Analysis (same as original)
+# 15. Solution analysis
 def analyze_solution(solution, name):
     sol = np.array(solution)
     basket_size = sol.sum()
@@ -468,6 +510,7 @@ def analyze_solution(solution, name):
     print(f"  Cash flow: {cash_flow:.4f} (range: [{rc_min:.4f}, {rc_max:.4f}])")
     print(f"  Characteristic: {characteristic:.4f} (range: [{b_lo:.4f}, {b_up:.4f}])")
     
+    # Constraint violations
     size_violation = abs(basket_size - N)
     cash_violation = max(0, rc_min - cash_flow) + max(0, cash_flow - rc_max)
     char_violation = max(0, b_lo - characteristic) + max(0, characteristic - b_up)
@@ -475,6 +518,20 @@ def analyze_solution(solution, name):
     print(f"  Constraint violation: {total_violation:.4f}")
     
     return total_violation
+
+quantum_violation = analyze_solution(best_solution, "Quantum")
+classical_violation = analyze_solution(best_classical_solution, "Classical")
+
+# Final assessment
+print(f"\n=== Final Assessment ===")
+if quantum_violation < classical_violation:
+    print("QUANTUM ADVANTAGE: Better constraint satisfaction")
+elif best_quantum_cost < best_classical_cost * 0.99:
+    print("QUANTUM ADVANTAGE: Better objective value")
+elif abs(best_quantum_cost - best_classical_cost) / best_classical_cost < 0.02:
+    print("COMPETITIVE: Near-optimal performance")
+else:
+    print("Classical solution dominates")
 
 analyze_solution(best_solution, "Optimized Quantum")
 
@@ -484,6 +541,18 @@ print(f"Memory-optimized circuits: {n_gates} gates")
 print(f"Smart caching: {cache.stats()}")
 print(f"Real-time monitoring: Peak {performance_summary.get('peak_memory', 0):.0f}MB")
 print(f"Adaptive configuration: {config['qaoa_layers']} layers, {config['restarts']} restarts")
+
+# Post-optimization analysis
+# Save top 10 quantum solutions data
+top_quantum_solutions = []
+for i, (solution, freq) in enumerate(counts.most_common(10)):
+    cost = classical_objective(np.array(solution))
+    top_quantum_solutions.append((cost, freq))
+
+print("\nTop 10 Quantum Solutions Data for Plotting:")
+for i, (cost, freq) in enumerate(top_quantum_solutions):
+    print(f"Solution {i+1}: Cost = {cost:.2f}, Frequency = {freq}")
+
 
 # Clean up
 gc.collect()

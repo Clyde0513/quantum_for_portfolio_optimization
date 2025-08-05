@@ -40,10 +40,20 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 | **Quantum**      | 10          | 0.0417    | 1.3150         | **0.0000**      |-220570|
 | **Classical**    | 10          | 0.0464    | 1.7846         | **0.1846**      |-220112|
 
+## WITH Lightning.GPU
+
+### Constraint Analysis of 20 bonds, basket size 10 (same ranges as the one right above this)
+
+| Solution         | Basket Size | Cash Flow | Characteristic | Total Violation | Cost   |
+|------------------|-------------|-----------|----------------|-----------------|------- |
+| **Quantum**      | 10          | 0.0459    | 1.3502         | **0.0000**      |-220550 |
+| **Classical**    | 10          | 0.0416    | 1.6062         | **0.0062**      |-220360 |
+
+
 ### Enhanced VQE Implementation
 
-- **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity; Also utilizing LIGHTNING.QUBIT instead of DEFAULT.QUBIT
-- **Multiple Restarts:** 4 restarts × 200 iterations each for robust optimization
+- **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity; Also utilizing LIGHTNING.QUBIT instead of DEFAULT.QUBIT (Using lightning.GPU in one of the examples and 3 ansatz layers and 100 batch size)
+- **Multiple Restarts:** 4 restarts × 200 iterations each for robust optimization (6 restarts * 150 iterations with lightning.GPU)
 - **Adative Learning Rate:** Use adaptive learning rate of 0.05 during optimization
 - **Adaptive Penalties:** Dynamic constraint weight adjustment during optimization
 - **Sampling Strategy:** 50,000 shots for high-precision measurements
@@ -58,8 +68,8 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 
 - **Scaling Potential:**
   - **Real-world portfolios:** 50-500+ assets
-  - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable
-  - **Hybrid approaches:** Quantum sampling with classical post-processing proves effective
+  - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable (this is why you need lightning.qubit for more than 20 simulation qubits)
+  - **Hybrid approaches:** Quantum sampling with classical post-processing proves effective (You can see more of this in the part 3 py file)
 
 **Task 1 (Mathematical Review):**
 
@@ -104,6 +114,184 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
    - The script prints the best quantum and classical solutions, along with their costs and constraint violations.
    - Top 10 quantum solutions with frequency and feasibility analysis
    - Comprehensive constraint satisfaction metrics
+
+## Example Output for exploring part 3 of steps1-5.py [WITH Lightning.GPU (20 qubits)]
+```text
+=== Hardware-Optimized Quantum Portfolio Optimization ===
+
+
+Problem size: 20 bonds, Target basket: 10
+Market parameters (m): [0.68727006 0.97535715 0.86599697 0.79932924 0.57800932 0.57799726
+ 0.52904181 0.93308807 0.80055751 0.85403629 0.51029225 0.98495493
+ 0.91622132 0.60616956 0.59091248 0.59170225 0.65212112 0.76237822
+ 0.71597251 0.64561457]
+
+Market parameters (M): [1.61185289 1.13949386 1.29214465 1.36636184 1.45606998 1.78517596
+ 1.19967378 1.51423444 1.59241457 1.04645041 1.60754485 1.17052412
+ 1.06505159 1.94888554 1.96563203 1.80839735 1.30461377 1.09767211
+ 1.68423303 1.44015249]
+
+Risk characteristics (i_c): [0.27322294 0.49710615 0.22063311 0.74559224 0.35526799 0.59751337
+ 0.38702665 0.51204081 0.52802617 0.31091267 0.78175078 0.66507969
+ 0.76369936 0.73689641 0.55873999 0.75312454 0.2530955  0.31758972
+ 0.22713637 0.3951982 ]
+
+Bond amounts if selected (x_c): [1.87984804 3.53041631 1.25914562 3.1827627  2.19725148 1.85365908
+ 2.92917525 1.71679936 5.11701216 1.17729936 1.57990907 4.59654824
+ 8.21807866 1.57568581 1.50185981 1.71707986 1.10795421 4.16596882
+ 1.9374733  3.5559606 ]
+
+Target basket size: 10
+
+Cash flow range: [0.0100, 0.0700]
+Characteristic range: [0.6, 1.6]
+Problem: 20 bonds → 10 portfolio
+Building QUBO formulation...
+QUBO matrix Q shape: (20, 20)
+
+=== Initializing Optimized Components ===
+Hardware Config:
+  CPUs: 16, Memory: 7.3GB
+  Recommended: {'qaoa_layers': 3, 'shots': 36681, 'restarts': 6, 'processes': 4, 'batch_size': 100}
+Main device: lightning.gpu
+Circuit Analysis:
+  Significant gates: 210
+  Estimated memory: 16.01 MB
+
+=== Starting Optimized Training ===
+QAOA layers: 3, Restarts: 6
+
+--- Restart 1/6 ---
+/opt/venv/lib/python3.10/site-packages/pennylane/devices/preprocess.py:289: UserWarning: Differentiating with respect to the input parameters of LinearCombination is not supported with the adjoint differentiation method. Gradients are computed only with regards to the trainable parameters of the circuit.
+
+ Mark the parameters of the measured observables as non-trainable to silence this warning.
+  warnings.warn(
+  Iter   0:  11.5241 | Cache: 1/500 entries, 0.0% hit rate
+  Iter  50:  29.4934 | Cache: 51/500 entries, 0.0% hit rate
+  Iter 100: -53.9448 | Cache: 101/500 entries, 0.0% hit rate
+  Iter 150:  55.0550 | Cache: 151/500 entries, 0.0% hit rate
+New best: 22.6160
+
+--- Restart 2/6 ---
+  Iter   0:  -4.1661 | Cache: 201/500 entries, 0.0% hit rate
+  Iter  50: -24.4928 | Cache: 251/500 entries, 0.0% hit rate
+  Iter 100: -102.6367 | Cache: 301/500 entries, 0.0% hit rate
+  Iter 150: -40.6631 | Cache: 351/500 entries, 0.0% hit rate
+New best: -84.3621
+
+--- Restart 3/6 ---
+  Iter   0: -44.7622 | Cache: 401/500 entries, 0.0% hit rate
+  Iter  50: -68.1531 | Cache: 451/500 entries, 0.0% hit rate
+  Iter 100:  55.1293 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150:  39.8304 | Cache: 500/500 entries, 0.0% hit rate
+
+--- Restart 4/6 ---
+  Iter   0:  67.2276 | Cache: 500/500 entries, 0.0% hit rate
+  Iter  50: -23.9908 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 100: -16.1134 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150:  63.1905 | Cache: 500/500 entries, 0.0% hit rate
+
+--- Restart 5/6 ---
+  Iter   0: -110.3614 | Cache: 500/500 entries, 0.0% hit rate
+  Iter  50:  21.9691 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 100: -18.1478 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150:   9.8562 | Cache: 500/500 entries, 0.0% hit rate
+
+--- Restart 6/6 ---
+  Iter   0:   9.5002 | Cache: 500/500 entries, 0.0% hit rate
+  Iter  50: -65.7129 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 100: 100.8758 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150:  30.3898 | Cache: 500/500 entries, 0.0% hit rate
+
+=== Optimized Sampling ===
+Sampling: 36681 shots in 0.40s
+
+Top quantum solutions:
+   1. Cost: -217360.73, Freq:    4
+   2. Cost: -219235.58, Freq:    3
+   3. Cost: -218511.65, Freq:    3
+   4. Cost: -220144.28, Freq:    3
+   5. Cost: -218572.17, Freq:    3
+   6. Cost: -219806.21, Freq:    3
+   7. Cost: -216266.67, Freq:    3
+   8. Cost: -220062.42, Freq:    3
+   9. Cost: -220550.40, Freq:    3
+  10. Cost: -218334.62, Freq:    3
+
+Classical benchmark...
+
+=== Hardware-Optimized Performance Summary ===
+Backend: lightning.gpu
+Circuit gates: 210 (optimized)
+Memory usage: 16.01 MB
+
+Timing:
+  Training: 1709.42s
+  Sampling: 0.40s
+  Classical: 0.14s
+  Total quantum: 1709.82s
+
+Results:
+  Best quantum cost: -220550.3965
+  Best classical cost: -220360.7243
+  Quantum advantage: 0.999x
+
+System Performance:
+  Peak CPU: 0.0%
+  Peak Memory: 3290.2 MB
+  Duration: 1712.5s
+
+Optimization Stats:
+  Cache: 500/500 entries, 0.0% hit rate
+  Best quantum cost: -220550.3965
+
+Quantum Solution:
+  Portfolio: [0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+  Basket size: 10 (target: 10)
+  Cash flow: 0.0459 (range: [0.0100, 0.0700])
+  Characteristic: 1.3502 (range: [0.6000, 1.6000])
+  Constraint violation: 0.0000
+
+Classical Solution:
+  Portfolio: [1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0]
+  Basket size: 10 (target: 10)
+  Cash flow: 0.0416 (range: [0.0100, 0.0700])
+  Characteristic: 1.6062 (range: [0.6000, 1.6000])
+  Constraint violation: 0.0062
+
+=== Final Assessment ===
+QUANTUM ADVANTAGE: Better constraint satisfaction
+
+Optimized Quantum Solution:
+  Portfolio: [0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+  Basket size: 10 (target: 10)
+  Cash flow: 0.0459 (range: [0.0100, 0.0700])
+  Characteristic: 1.3502 (range: [0.6000, 1.6000])
+  Constraint violation: 0.0000
+
+=== Optimization Impact ===
+Hardware-optimized backend: lightning.gpu
+Memory-optimized circuits: 210 gates
+Smart caching: Cache: 500/500 entries, 0.0% hit rate
+Real-time monitoring: Peak 3290MB
+Adaptive configuration: 3 layers, 6 restarts
+
+Top 10 Quantum Solutions Data for Plotting:
+Solution 1: Cost = -217360.73, Frequency = 4
+Solution 2: Cost = -179587.08, Frequency = 3
+Solution 3: Cost = -218511.65, Frequency = 3
+Solution 4: Cost = -180389.36, Frequency = 3
+Solution 5: Cost = -218572.17, Frequency = 3
+Solution 6: Cost = -213207.97, Frequency = 3
+Solution 7: Cost = -216266.67, Frequency = 3
+Solution 8: Cost = -203921.04, Frequency = 3
+Solution 9: Cost = -196635.26, Frequency = 3
+Solution 10: Cost = -209672.49, Frequency = 3
+
+Memory cleanup completed
+
+```
+## Without GPU from here on out
 
 ## Example Output for exploring part 2 of steps1-5.py
 ```
