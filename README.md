@@ -77,7 +77,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 
 - **Scaling Potential:**
   - **Real-world portfolios:** 50-500+ assets (this will be very difficult as there are only certain amount of real qubits in the world
-  - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable (this is why you need lightning.qubit for more than 20 simulation qubits)
+  - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable (this is why you need lightning.gpu for more than 20 simulation qubits)
   - **Hybrid approaches:** Quantum sampling with classical post-processing proves effective (You can see more of this in the part 3 py file)
 
 **Task 1 (Mathematical Review):**
@@ -1003,7 +1003,7 @@ Solution 5: Cost = -83925.36, Frequency = 84
 
 ### QAOA Implementation
 
-- Quantum Approximate Optimization Algorithm with 4 layers with lightning.qubit
+- Quantum Approximate Optimization Algorithm with 4 layers with lightning.qubit (3 layers with lightning.gpu and shots are 36681 with 6 restarts, 4 processes, and batch size of 100)
 - Optimized parameter initialization and learning rates
 - Robust multi-restart strategy for global optimization
 
@@ -1018,6 +1018,7 @@ Solution 5: Cost = -83925.36, Frequency = 84
 - Detailed constraint satisfaction metrics
 - Classical benchmark comparison with simulated annealing
 - Cost ratio analysis and competitive assessment
+- Includes 7 plots under the current_progress/quantum_analysis_plots
 
 ### **Algorithm Performance:**
 
@@ -1031,14 +1032,13 @@ Solution 5: Cost = -83925.36, Frequency = 84
 **Areas for Improvement:**
 
 - Penalty parameter tuning needed for better constraint satisfaction
-- Could benefit from hybrid classical-quantum preprocessing
-- Larger problem sizes would better demonstrate quantum advantage, in theory
+- Larger problem sizes would better demonstrate quantum advantage, in theory, however it will be harder due to limited amount of qubits in the world
 
 ## Technical Implementation
 
-- **Quantum Framework:** PennyLane with lightning.qubit simulator
-- **Optimization:** Adam optimizer with adaptive learning rate of 0.05
-- **Sampling:** 50,000 shots for high-precision measurements
+- **Quantum Framework:** PennyLane with lightning.qubit and lightning.gpu simulators
+- **Optimization:** Adam optimizer with adaptive learning rate of 0.05 and 0.01
+- **Sampling:** 50,000 shots for high-precision measurements (36681 shots for lightning.gpu)
 - **Classical Benchmark:** Simulated annealing with basin hopping
 - **Constraint Handling:** Penalty method with adaptive scaling
 
