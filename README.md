@@ -1,8 +1,8 @@
 # Quantum Portfolio Optimization 
 
-(**for exploring part 2 of step1-5.py**)
+(**for exploring part 3 of step1-5.py**)
 
-It's different for the exploring part 1 of step1-5.py because we're just experimenting
+It's different for the exploring part 1 [and2] of step1-5.py because we're just experimenting
 
 This project demonstrates a quantum approach to portfolio optimization using Variational Quantum Eigensolver (VQE) with QAOA ansatz and PennyLane. The implementation achieves competitive performance with classical methods while demonstrating  constraint satisfaction capabilities. This is a Hackathon for Wiser's Project 2: Quantum for Portfolio Optimization.
 
