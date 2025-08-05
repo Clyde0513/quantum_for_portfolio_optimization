@@ -71,12 +71,12 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 ## Scalability Analysis
 
 - **Current Implementation:**
-  - **16 qubits:** Substantial classical simulation requirements
-  - **65,536 possible solutions:** Classical enumeration becomes challenging
+  - **16 qubits (20-25 qubits for lightning.GPU):** Substantial classical simulation requirements
+  - **65,536+ possible solutions:** Classical enumeration becomes challenging
   - **Complexity:** Exponential classical search space vs polynomial VQE optimization
 
 - **Scaling Potential:**
-  - **Real-world portfolios:** 50-500+ assets
+  - **Real-world portfolios:** 50-500+ assets (this will be very difficult as there are only certain amount of real qubits in the world
   - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable (this is why you need lightning.qubit for more than 20 simulation qubits)
   - **Hybrid approaches:** Quantum sampling with classical post-processing proves effective (You can see more of this in the part 3 py file)
 
