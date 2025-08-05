@@ -49,7 +49,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 | **Quantum**      | 10          | 0.0459    | 1.3502         | **0.0000**      |-220550 |
 | **Classical**    | 10          | 0.0416    | 1.6062         | **0.0062**      |-220360 |
 
-### Constraint Analysis of 20 bonds, basket size 10 (this time no constraints but quantum still wins) [There's graphs for this in the folder called quantum_analysis]
+### Constraint Analysis of 20 bonds, basket size 10 (this time no constraints because we made the characteristic ranges from 1.6 to 2.0 but quantum still wins) [There's graphs for this in the folder called quantum_analysis]
 
 | Solution         | Basket Size | Cash Flow | Characteristic | Total Violation | Cost   |
 |------------------|-------------|-----------|----------------|-----------------|------- |
