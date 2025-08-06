@@ -289,7 +289,7 @@ Quantum Solution Analysis:
     6. US95000U3B74: Return=0.057, Risk=0.067
   Portfolio metrics:
     Cash flow: 0.0663 (target: [3.0%, 6.0%])
-    Risk characteristic: 0.2698
+    Risk characteristic: 0.2698 (target: [1.6 - 2.0])
     Average return: 0.061 (6.1%)
     Average risk: 0.067
     Total constraint violation: 1.3365
@@ -305,7 +305,7 @@ Classical Solution Analysis:
     7. US95000U3D31: Return=0.062, Risk=0.066
   Portfolio metrics:
     Cash flow: 0.0766 (target: [3.0%, 6.0%])
-    Risk characteristic: 0.2633
+    Risk characteristic: 0.2633 (target: [1.6 - 2.0])
     Average return: 0.061 (6.1%)
     Average risk: 0.061
     Total constraint violation: 2.3533
@@ -323,7 +323,7 @@ Final Quantum Solution Analysis:
     6. US95000U3B74: Return=0.057, Risk=0.067
   Portfolio metrics:
     Cash flow: 0.0663 (target: [3.0%, 6.0%])
-    Risk characteristic: 0.2698
+    Risk characteristic: 0.2698 (target: [1.6 - 2.0])
     Average return: 0.061 (6.1%)
     Average risk: 0.067
     Total constraint violation: 1.3365

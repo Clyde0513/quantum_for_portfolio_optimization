@@ -570,13 +570,13 @@ def analyze_solution(solution, name):
     
     print(f"  Portfolio metrics:")
     print(f"    Cash flow: {cash_flow:.4f} (target: [{rc_min:.1%}, {rc_max:.1%}])")
-    print(f"    Risk characteristic: {characteristic:.4f}")
+    print(f"    Risk characteristic: {characteristic:.4f} (target: [{b_lo:.1f}, {b_up:.1f}])")
     if len(selected_returns) > 0:
         avg_return = np.mean(selected_returns)
         avg_risk = np.mean(selected_risks)
         print(f"    Average return: {avg_return:.3f} ({avg_return:.1%})")
-        print(f"    Average risk: {avg_risk:.3f}")
-    
+        print(f"    Average risk: {avg_risk:.3f} ({avg_risk:.1%})")
+
     # Constraint violations
     size_violation = abs(basket_size - N)
     cash_violation = max(0, rc_min - cash_flow) + max(0, cash_flow - rc_max)
