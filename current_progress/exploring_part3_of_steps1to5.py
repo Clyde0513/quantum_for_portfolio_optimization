@@ -200,8 +200,8 @@ class ResourceManager:
         memory_gb = psutil.virtual_memory().total / (1024**3)
         
         config = {
-            'qaoa_layers': min(6, max(2, int(memory_gb // 2))),
-            #'qaoa_layers': 15,  # More layers for larger problems
+            # 'qaoa_layers': min(6, max(2, int(memory_gb // 2))),
+            'qaoa_layers': 15,  # More layers for larger problems
             'shots': min(100000, int(memory_gb * 5000)),
             'restarts': min(cpu_count, max(2, n_qubits // 3)),
             'processes': min(cpu_count - 1, 4),
