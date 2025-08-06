@@ -10,6 +10,9 @@ import threading
 from multiprocessing import Pool, Manager
 import hashlib
 
+from vanguard_data_loader import load_vanguard_portfolio_data
+
+
 print("=== Hardware-Optimized Quantum Portfolio Optimization ===\n")
 
 # 1. Hardware-Specific Backend Selection
@@ -202,69 +205,113 @@ class ResourceManager:
         
         return config
 
-# 6. Enhanced Problem Setup (same as part 2 but with optimizations)
+# 6. Real Vanguard Portfolio Data Integration
 
-n = 20  # Number of bonds (this is also the number of qubits)
-np.random.seed(42)
+# Load real Vanguard bond portfolio data
+print("=== Loading Real Vanguard Portfolio Data ===")
+from vanguard_data_loader import load_vanguard_portfolio_data
 
-# Market Parameters (same as part 2)
-m = np.random.uniform(0.5, 1.0, size=n)
-M = np.random.uniform(1.0, 2.0, size=n)
-i_c = np.random.uniform(0.2, 0.8, size=n)
-delta_c = np.random.uniform(0.1, 0.5, size=n)
+# Load portfolio data with desired number of assets for quantum optimization
+n_assets_target = 20  # Optimal size for quantum hardware
+portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
 
-N = 10 # Target basket size
-rc_min = 0.01 # Minimum cash flow
-rc_max = 0.07 # Maximum cash flow
-mvb = 1.0 # Market value of bonds
+# Extract key portfolio information
+n = len(portfolio_data['returns'])  # Actual number of bonds loaded
+expected_returns = portfolio_data['returns']  # Real expected returns from credit spreads
+risk_measures = portfolio_data['risks']  # Real risk measures from duration & credit
+correlation_matrix = portfolio_data['correlations']  # Real correlations from sector/credit
+asset_names = portfolio_data['asset_names']  # Real bond identifiers (ISIN codes)
+current_weights = portfolio_data['weights']  # Current portfolio weights from market values
+portfolio_info = portfolio_data['portfolio_info']  # Portfolio metadata
 
-beta = np.random.uniform(0.0, 1.0, size=(n, 1)) # Risk characteristics matrix
-k_target = np.array([[1.0]]) # Target risk characteristics matrix
-rho = np.array([[5.0]]) # Risk aversion coefficient
+print(f"\n=== Real Portfolio Characteristics ===")
+print(f"Fund: {portfolio_info['fund_name']}")
+print(f"Portfolio size: {n} bonds (quantum optimized)")
+print(f"Average duration: {portfolio_info['avg_duration']:.2f} years")
+print(f"Average credit spread: {portfolio_info['avg_credit_spread']:.0f} basis points")
+print(f"Returns range: [{expected_returns.min():.3f}, {expected_returns.max():.3f}]")
+print(f"Risk range: [{risk_measures.min():.3f}, {risk_measures.max():.3f}]")
+print(f"Sample bonds: {asset_names[:3]}")
 
-lambda_size = 2000.0 # Penalty for basket size
-lambda_RCup = 500.0 # Penalty for cash flow upper bound
-lambda_RClo = 500.0 # Penalty for cash flow lower bound
-lambda_char = 300.0 # Penalty for characteristic bounds
+# Convert to quantum optimization parameters based on real bond characteristics
+# These parameters are derived from actual Vanguard bond properties
 
-x_c = (m + np.minimum(M, i_c)) / (2 * delta_c) # Bond amounts if selected
+# Market parameters derived from real expected returns and risks
+m = expected_returns * 100  # Convert to percentage scale for optimization
+M = expected_returns * 120  # Upper bounds (20% above expected)
+i_c = risk_measures * 10    # Scale risk measures for optimization
+delta_c = np.ones(n) * 0.1  # Position sizing parameter (uniform for bonds)
 
-print(f"\nProblem size: {n} bonds, Target basket: {N}")
+# Portfolio construction parameters (realistic for bond portfolios)
+N = min(8, max(5, n // 3))  # Target basket size (reasonable for bond portfolio)
+rc_min = 0.03  # Minimum portfolio yield (3%)
+rc_max = 0.06  # Maximum portfolio yield (6%) 
+mvb = 1.0      # Market value base (normalized)
 
-print(f"Market parameters (m): {m}")
-print()
-print(f"Market parameters (M): {M}")
-print()
-print(f"Risk characteristics (i_c): {i_c}")
-print()
-print(f"Bond amounts if selected (x_c): {x_c}")
-print()
-print(f"Target basket size: {N}")
-print()
-print(f"Cash flow range: [{rc_min:.4f}, {rc_max:.4f}]")
-print(f"Characteristic range: [0.6, 2.0]")
+# Risk characteristics matrix (use actual risk measures)
+beta = risk_measures.reshape(-1, 1)  # Real risk characteristics from duration/credit
+k_target = np.array([[portfolio_info['avg_duration'] * 0.01]])  # Target based on portfolio average
+rho = np.array([[2.0]])  # Risk aversion coefficient (moderate for bonds)
 
+# Penalty parameters (calibrated for bond optimization)
+lambda_size = 1000.0   # Portfolio size constraint penalty
+lambda_RCup = 300.0    # Cash flow upper bound penalty
+lambda_RClo = 300.0    # Cash flow lower bound penalty  
+lambda_char = 200.0    # Risk characteristic penalty
 
-print(f"Problem: {n} bonds → {N} portfolio")
+# Bond amounts calculation using real portfolio data
+# Scale based on current weights and expected returns
+x_c = current_weights * n * 2  # Scale current weights to optimization range
 
-# 7. QUBO Construction (same as part 2)
+print(f"\n=== Quantum Optimization Problem Setup ===")
+print(f"Real Vanguard bonds: {n}, Target portfolio: {N}")
+print(f"Data source: {portfolio_data['data_source']}")
+print(f"Fund: {portfolio_info['fund_name']} (${portfolio_info['total_market_value']:,.0f})")
+
+print(f"\nReal Market Parameters:")
+print(f"  Expected returns (m): [{m.min():.2f}, {m.max():.2f}]%")
+print(f"  Return bounds (M): [{M.min():.2f}, {M.max():.2f}]%") 
+print(f"  Risk measures (i_c): [{i_c.min():.3f}, {i_c.max():.3f}]")
+print(f"  Position weights (x_c): [{x_c.min():.3f}, {x_c.max():.3f}]")
+
+print(f"\nPortfolio Constraints:")
+print(f"  Target basket size: {N} bonds")
+print(f"  Yield range: [{rc_min:.1%}, {rc_max:.1%}]")
+print(f"  Duration target: {k_target[0,0]:.3f}")
+print(f"  Risk aversion: {rho[0,0]:.1f}")
+
+print(f"\nSample Real Bonds:")
+for i in range(min(5, n)):
+    print(f"  {asset_names[i]}: Return={expected_returns[i]:.3f}, Risk={risk_measures[i]:.3f}")
+
+print(f"\nOptimization ready: {n} real Vanguard bonds → {N} quantum portfolio")
+
+# 7. Enhanced QUBO Construction with Real Correlation Data
 Q = np.zeros((n, n))
 q = np.zeros(n)
-print("Building QUBO formulation...")
+print("\n=== Building QUBO with Real Bond Data ===")
 
-# Build QUBO (same logic as part 2)
+# Build covariance matrix from real correlation and risk data
+covariance_matrix = np.outer(risk_measures, risk_measures) * correlation_matrix
+print(f"Covariance matrix built from real bond correlations: {covariance_matrix.shape}")
+
+# Build QUBO formulation
 l, j = 0, 0
 w = rho[l, j]
 k_target_lj = k_target[l, j]
 
-# Single bond terms: cash flow
+# Single bond terms: risk-adjusted returns using real covariance
 for i in range(n):
     for k in range(n):
         Q[i, k] += w * beta[i, j] * beta[k, j] * x_c[i] * x_c[k]
+        # Add covariance penalty for realistic portfolio risk
+        Q[i, k] += 0.1 * covariance_matrix[i, k]
 
-# Cross terms: bond pairs
+# Cross terms: bond pairs with real expected returns
 for i in range(n):
     q[i] += -2 * w * beta[i, j] * x_c[i] * k_target_lj
+    # Add return incentive based on real expected returns
+    q[i] += -0.5 * expected_returns[i]
     
     
 # Penalty terms for basket size
@@ -503,25 +550,39 @@ print(f"\nOptimization Stats:")
 print(f"  {cache.stats()}")
 print(f"  Best quantum cost: {best_quantum_cost:.4f}")
 
-# 15. Solution analysis: analyze both quantum and classical solutions metrics
+# 15. Enhanced Solution Analysis with Real Bond Names
 def analyze_solution(solution, name):
     sol = np.array(solution)
     basket_size = sol.sum()
     cash_flow = np.dot(a_cf, sol)
     characteristic = np.dot(char_coeff, sol)
     
-    print(f"\n{name} Solution:")
-    print(f"  Portfolio: {[int(x) for x in solution]}")
-    print(f"  Basket size: {basket_size} (target: {N})")
-    print(f"  Cash flow: {cash_flow:.4f} (range: [{rc_min:.4f}, {rc_max:.4f}])")
-    print(f"  Characteristic: {characteristic:.4f} (range: [{b_lo:.4f}, {b_up:.4f}])")
+    # Get selected bond names and their characteristics
+    selected_indices = [i for i, x in enumerate(solution) if x == 1]
+    selected_bonds = [asset_names[i] for i in selected_indices]
+    selected_returns = [expected_returns[i] for i in selected_indices]
+    selected_risks = [risk_measures[i] for i in selected_indices]
+    
+    print(f"\n{name} Solution Analysis:")
+    print(f"  Selected {int(basket_size)} bonds (target: {N}):")
+    for i, (bond, ret, risk) in enumerate(zip(selected_bonds, selected_returns, selected_risks)):
+        print(f"    {i+1}. {bond}: Return={ret:.3f}, Risk={risk:.3f}")
+    
+    print(f"  Portfolio metrics:")
+    print(f"    Cash flow: {cash_flow:.4f} (target: [{rc_min:.1%}, {rc_max:.1%}])")
+    print(f"    Risk characteristic: {characteristic:.4f}")
+    if len(selected_returns) > 0:
+        avg_return = np.mean(selected_returns)
+        avg_risk = np.mean(selected_risks)
+        print(f"    Average return: {avg_return:.3f} ({avg_return:.1%})")
+        print(f"    Average risk: {avg_risk:.3f}")
     
     # Constraint violations
     size_violation = abs(basket_size - N)
     cash_violation = max(0, rc_min - cash_flow) + max(0, cash_flow - rc_max)
     char_violation = max(0, b_lo - characteristic) + max(0, characteristic - b_up)
     total_violation = size_violation + cash_violation + char_violation
-    print(f"  Constraint violation: {total_violation:.4f}")
+    print(f"    Total constraint violation: {total_violation:.4f}")
     
     return total_violation
 
@@ -539,14 +600,21 @@ elif abs(best_quantum_cost - best_classical_cost) / best_classical_cost < 0.02:
 else:
     print("Classical solution dominates")
 
-analyze_solution(best_solution, "Optimized Quantum")
+analyze_solution(best_solution, "Final Quantum")
 
-print(f"\n=== Optimization Impact ===")
-print(f"Hardware-optimized backend: {backend_name}")
-print(f"Memory-optimized circuits: {n_gates} gates")
-print(f"Smart caching: {cache.stats()}")
-print(f"Real-time monitoring: Peak {performance_summary.get('peak_memory', 0):.0f}MB")
-print(f"Adaptive configuration: {config['qaoa_layers']} layers, {config['restarts']} restarts")
+print(f"\n=== Real Data Integration Impact ===")
+print(f"Data source: {portfolio_data['data_source']} ({portfolio_info['fund_name']})")
+print(f"Real portfolio: ${portfolio_info['total_market_value']:,.0f} market value")  
+print(f"Authentic bonds: {n} from {portfolio_info['n_assets']} total positions")
+print(f"Real correlations: Avg {np.mean(correlation_matrix[np.triu_indices_from(correlation_matrix, k=1)]):.3f}")
+print(f"Actual risk-return: Duration {portfolio_info['avg_duration']:.1f}y, Spread {portfolio_info['avg_credit_spread']:.0f}bp")
+
+print(f"\n=== Hardware Optimization Impact ===")
+print(f"Backend: {backend_name} (hardware-optimized)")
+print(f"Circuit gates: {n_gates} (memory-optimized)")  
+print(f"Caching: {cache.stats()}")
+print(f"Monitoring: Peak {performance_summary.get('peak_memory', 0):.0f}MB")
+print(f"Configuration: {config['qaoa_layers']} layers, {config['restarts']} restarts")
 
 # Post-optimization analysis
 # Save top 10 quantum solutions data
@@ -560,7 +628,7 @@ for i, (cost, freq) in enumerate(top_quantum_solutions):
     print(f"Solution {i+1}: Cost = {cost:.2f}, Frequency = {freq}")
 
 
-# 16. Comprehensive Visualization and Analysis
+# 16. Comprehensive Visualization and Analysis - Real Vanguard Data
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.patches import Rectangle
@@ -573,10 +641,11 @@ sns.set_palette("husl")
 
 # Create output directory for plots
 import os
-plot_dir = "quantum_analysis_plots-1"
+plot_dir = "vanguard_quantum_analysis"
 os.makedirs(plot_dir, exist_ok=True)
 
-print(f"\n=== Creating Comprehensive Analysis Plots ===")
+print(f"\n=== Creating Real Vanguard Portfolio Analysis Plots ===")
+print(f"Data: {portfolio_info['fund_name']} with {n} real bonds")
 print(f"Saving plots to: {plot_dir}/")
 
 def save_plot(fig, filename, dpi=300):
@@ -587,9 +656,10 @@ def save_plot(fig, filename, dpi=300):
     print(f"  Saved: {full_path}")
     return full_path
 
-# 1. Performance Comparison Dashboard
+# 1. Real Vanguard Portfolio Performance Dashboard
 fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
-fig.suptitle('Quantum vs Classical Portfolio Optimization - Performance Dashboard', fontsize=16, fontweight='bold')
+title = f'Quantum vs Classical: Real Vanguard {portfolio_info["fund_name"]} Portfolio Optimization'
+fig.suptitle(title, fontsize=16, fontweight='bold')
 
 # Cost comparison
 methods = ['Quantum\n(QAOA)', 'Classical\n(Basin Hopping)']
