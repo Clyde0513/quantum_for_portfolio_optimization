@@ -573,7 +573,7 @@ sns.set_palette("husl")
 
 # Create output directory for plots
 import os
-plot_dir = "quantum_analysis_plots"
+plot_dir = "quantum_analysis_plots-1"
 os.makedirs(plot_dir, exist_ok=True)
 
 print(f"\n=== Creating Comprehensive Analysis Plots ===")
