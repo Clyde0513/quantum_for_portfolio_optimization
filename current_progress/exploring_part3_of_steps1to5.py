@@ -220,7 +220,7 @@ print("=== Loading Real Vanguard Portfolio Data ===")
 from vanguard_data_loader import load_vanguard_portfolio_data
 
 # Load portfolio data with desired number of assets for quantum optimization
-n_assets_target = 6  # Optimal size for quantum hardware
+n_assets_target = 20 # Optimal size for quantum hardware
 portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
 
 # Extract key portfolio information
@@ -333,8 +333,10 @@ q += -2 * lambda_RCup * rc_max * a_cf
 Q += lambda_RClo * np.outer(a_cf, a_cf)
 q += -2 * lambda_RClo * rc_min * a_cf
 
-b_up = 2.0 # Upper bound for characteristic
-b_lo = 1.6 # Lower bound for characteristic
+b_up = 0.8 # Upper bound for characteristic
+b_lo = 0.4 # Lower bound for characteristic
+
+
 char_coeff = beta[:, j] * i_c
 Q += lambda_char * np.outer(char_coeff, char_coeff)
 q += -2 * lambda_char * b_up * char_coeff
