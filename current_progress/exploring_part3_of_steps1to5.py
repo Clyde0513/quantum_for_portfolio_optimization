@@ -1,3 +1,11 @@
+# ./setup_environment.sh (do this in base env so it can do conda)
+# conda activate quantum_portfolio
+
+#or if you want pip with venv
+# python -m venv quantum_portfolio_env
+# source quantum_portfolio_env/bin/activate  # On macOS/Linux
+# pip install -r requirements.txt
+
 import pennylane.numpy as np
 import pennylane as qml
 from collections import Counter
@@ -212,7 +220,7 @@ print("=== Loading Real Vanguard Portfolio Data ===")
 from vanguard_data_loader import load_vanguard_portfolio_data
 
 # Load portfolio data with desired number of assets for quantum optimization
-n_assets_target = 20  # Optimal size for quantum hardware
+n_assets_target = 6  # Optimal size for quantum hardware
 portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
 
 # Extract key portfolio information
