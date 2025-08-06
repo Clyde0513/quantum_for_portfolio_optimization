@@ -40,7 +40,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Real Vanguard Data Example 2
+## Real Vanguard Data Example 3
 
 ### Constraint Analysis of 15 bonds, basket size 10 
 
