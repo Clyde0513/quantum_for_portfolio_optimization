@@ -10,7 +10,7 @@ This project demonstrates a quantum approach to portfolio optimization using Var
 
 The goal of this project is to solve a Quadratic Unconstrained Binary Optimization (QUBO) problem for portfolio optimization. The problem is mapped to a quantum Hamiltonian, and the ground state of the Hamiltonian represents the optimal portfolio.
 
-### Key Results
+### Key Results (for the first 5 results, it's all synthetic (realistic))
 
 - **Problem Size:** 16 bonds, target basket size: 8 (6 in step1-5.py)
 - **Quantum Solution:** [1,0,0,1,1,1,0,0,1,0,0,0,0,1,1,1] with cost -144418.5019 (constraint satisfaction)
@@ -59,6 +59,22 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 - **Lightning.qubit Vs Lightning.gpu Speedup:** Lightning.gpu with 20 qubits takes roughly 1700 seconds than Lightning.qubit with 20 qubits which took roughly 8300 seconds. So fast!
 - **Using Significant Gates & recommended hardware configs:** So that we speedup the process even more and made sure to recommend optimal configuration based on hardware
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Real Vanguard Data
+
+### Constraint Analysis of 20 bonds, basket size 10 (Some constraints because we made the characteristic ranges from 1.6 to 2.0 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis]
+
+## In the next run, we will make the characteristic range realistic now, just experimenting with it
+
+Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
+-- So if we have 20 bonds --> min (8, max(5, 6)) --> min(8,6) --> 6 basket size
+
+| Solution         | Basket Size | Cash Flow | Characteristic | Total Violation | Cost   |
+|------------------|-------------|-----------|----------------|-----------------|------- |
+| **Quantum**      |      6      | 0.0663    | 0.2698         | **1.3365**      |-42359  |
+| **Classical**    |      6      | 0.0766    | 0.2633         | **2.3533**      |-42351  |
+
 ### Enhanced VQE Implementation
 
 - **Circuit Architecture:** QAOA ansatz with 4 layers for optimal expressivity; Also utilizing LIGHTNING.QUBIT instead of DEFAULT.QUBIT (Using lightning.GPU in one of the examples and 3 ansatz layers and 100 batch size)
@@ -76,7 +92,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
   - **Complexity:** Exponential classical search space vs polynomial VQE optimization
 
 - **Scaling Potential:**
-  - **Real-world portfolios:** 50-500+ assets (this will be very difficult as there are only certain amount of real qubits in the world
+  - **Real-world portfolios:** 50-500+ assets (using vanguard data now!)
   - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable (this is why you need lightning.gpu for more than 20 simulation qubits)
   - **Hybrid approaches:** Quantum sampling with classical post-processing proves effective (You can see more of this in the part 3 py file)
 
@@ -116,7 +132,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 2. Run the script:
 
    ```bash
-   python "exploring part 2 of step1-5.py"
+   python "exploring part 3 of step1-5.py"
    ```
 
 3. Review the output:
