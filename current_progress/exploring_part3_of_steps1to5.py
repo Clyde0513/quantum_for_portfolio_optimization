@@ -201,6 +201,7 @@ class ResourceManager:
         
         config = {
             'qaoa_layers': min(6, max(2, int(memory_gb // 2))),
+            #'qaoa_layers': 15,  # More layers for larger problems
             'shots': min(100000, int(memory_gb * 5000)),
             'restarts': min(cpu_count, max(2, n_qubits // 3)),
             'processes': min(cpu_count - 1, 4),
@@ -220,7 +221,7 @@ print("=== Loading Real Vanguard Portfolio Data ===")
 from vanguard_data_loader import load_vanguard_portfolio_data
 
 # Load portfolio data with desired number of assets for quantum optimization
-n_assets_target = 20 # Optimal size for quantum hardware
+n_assets_target = 15 # Optimal size for quantum hardware
 portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
 
 # Extract key portfolio information

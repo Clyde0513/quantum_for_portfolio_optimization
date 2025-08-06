@@ -1,0 +1,63 @@
+
+QUANTUM PORTFOLIO OPTIMIZATION - ANALYSIS REPORT
+Generated: 2025-08-06 15:04:48
+============================================================
+
+PROBLEM CONFIGURATION:
+- Number of bonds: 15
+- Target portfolio size: 5
+- QAOA layers: 3
+- Backend: lightning.gpu
+- Circuit gates: 120
+
+PERFORMANCE RESULTS:
+- Best quantum cost: -30089.251981
+- Best classical cost: -30098.760213
+- Quantum advantage ratio: 1.000
+- Quantum constraint violation: 0.172373
+- Classical constraint violation: 1.142953
+
+TIMING ANALYSIS:
+- Training time: 408.27 seconds
+- Sampling time: 0.13 seconds
+- Classical time: 0.10 seconds
+- Total quantum time: 408.40 seconds
+- Speed ratio (Classical/Quantum): 0.00
+
+CONSTRAINT SATISFACTION:
+Quantum Solution:
+- Portfolio size: 5/5 (target)
+- Cash flow: 0.054644 (range: [0.030000, 0.060000])
+- Risk characteristic: 0.227627 (range: [0.4, 0.8])
+
+Classical Solution:
+- Portfolio size: 6/5 (target)
+- Cash flow: 0.065267 (range: [0.030000, 0.060000])
+- Risk characteristic: 0.262314 (range: [0.4, 0.8])
+
+HARDWARE UTILIZATION:
+- Memory estimate: 0.51 MB
+- Configuration: {'qaoa_layers': 3, 'shots': 36681, 'restarts': 5, 'processes': 4, 'batch_size': 312}
+
+- Peak CPU usage: 0.0%
+- Peak memory usage: 2300.1 MB
+- Total duration: 415.7 seconds
+
+OPTIMIZATION STATISTICS:
+- Cache performance: Cache: 500/500 entries, 0.0% hit rate
+- Total samples analyzed: 36681
+- Unique solutions found: 10562
+- Top solution frequency: 196
+
+SOLUTION ANALYSIS:
+Top 10 Quantum Solutions:
+   1. Cost: -10116.7284, Frequency:    196
+   2. Cost: -24107.8303, Frequency:    191
+   3. Cost: -18115.2024, Frequency:    150
+   4. Cost: -28065.9831, Frequency:    123
+   5. Cost: -24108.9464, Frequency:    122
+   6. Cost: -28092.9141, Frequency:    110
+   7. Cost: -10122.4552, Frequency:    108
+   8. Cost: -28092.6715, Frequency:    105
+   9. Cost: -30072.8983, Frequency:    101
+  10. Cost: -30083.4082, Frequency:     98
