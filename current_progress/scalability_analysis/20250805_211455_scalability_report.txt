@@ -1,0 +1,130 @@
+
+QUANTUM PORTFOLIO OPTIMIZATION SCALABILITY ANALYSIS REPORT
+Generated: 2025-08-05 21:14:55
+======================================================================
+
+ANALYSIS OVERVIEW:
+- Qubit Range Tested: 4 to 19 assets
+- Total Test Cases: 16
+- Successful Quantum Runs: 16
+- Successful Classical Runs: 16
+- Both Methods Successful: 16
+
+PERFORMANCE SUMMARY:
+==================================================
+
+Optimization Time Scaling:
+- Quantum Time Growth (4→19 qubits): 342.80x
+- Classical Time Growth (4→19 qubits): 4.31x
+- Average Quantum Time: 18.579 seconds
+- Average Classical Time: 0.007 seconds
+- Speed Ratio (Q/C): 2713.44
+
+
+Solution Quality Analysis:
+- Average Quantum Objective: -69.640373
+- Average Classical Objective: -355.307881
+- Relative Quality Advantage: -80.40%
+
+
+Resource Usage Analysis:
+- Average Quantum Memory: 40.8 MB
+- Peak Quantum Memory: 233.3 MB
+- Average Classical Memory: -0.4 MB
+- Peak Classical Memory: 0.2 MB
+
+
+Circuit Complexity Analysis:
+- Average Circuit Depth: 330.0
+- Maximum Circuit Depth: 760
+- Average Gate Count: 69.0
+- Maximum Gate Count: 114
+
+
+Constraint Satisfaction Analysis:
+- Average Quantum Constraint Violation: 0.9210
+- Maximum Quantum Violation: 1.5000
+- Average Classical Constraint Violation: 0.0000
+- Maximum Classical Violation: 0.0000
+
+
+KEY INSIGHTS:
+==================================================
+• Quantum optimization time shows exponential scaling challenges
+• High quantum algorithm success rate across problem sizes
+• Classical method outperforms quantum on average
+
+
+DETAILED RESULTS BY PROBLEM SIZE:
+==================================================
+
+4 Assets (4 Qubits):
+  Quantum: 0.405s, Obj: -0.212813, Mem: 14.6MB
+  Classical: 0.003s, Obj: -40.111064, Mem: 0.0MB
+
+5 Assets (5 Qubits):
+  Quantum: 0.540s, Obj: 49.734735, Mem: 21.4MB
+  Classical: 0.003s, Obj: -40.114239, Mem: 0.0MB
+
+6 Assets (6 Qubits):
+  Quantum: 0.892s, Obj: -0.319440, Mem: 20.8MB
+  Classical: 0.004s, Obj: -90.166988, Mem: 0.0MB
+
+7 Assets (7 Qubits):
+  Quantum: 1.162s, Obj: 69.630034, Mem: 16.4MB
+  Classical: 0.004s, Obj: -90.166988, Mem: 0.0MB
+
+8 Assets (8 Qubits):
+  Quantum: 1.423s, Obj: 0.000000, Mem: 27.6MB
+  Classical: 0.005s, Obj: -160.224865, Mem: 0.0MB
+
+9 Assets (9 Qubits):
+  Quantum: 1.818s, Obj: 0.000000, Mem: 32.4MB
+  Classical: 0.005s, Obj: -160.227089, Mem: 0.0MB
+
+10 Assets (10 Qubits):
+  Quantum: 2.241s, Obj: -90.057404, Mem: 36.1MB
+  Classical: 0.008s, Obj: -250.278483, Mem: 0.0MB
+
+11 Assets (11 Qubits):
+  Quantum: 3.581s, Obj: 109.417754, Mem: 11.7MB
+  Classical: 0.008s, Obj: -250.291444, Mem: 0.0MB
+
+12 Assets (12 Qubits):
+  Quantum: 4.630s, Obj: -200.537888, Mem: 0.8MB
+  Classical: 0.007s, Obj: -360.341034, Mem: 0.1MB
+
+13 Assets (13 Qubits):
+  Quantum: 5.787s, Obj: 0.000000, Mem: 30.7MB
+  Classical: 0.008s, Obj: -360.347843, Mem: 0.0MB
+
+14 Assets (14 Qubits):
+  Quantum: 7.629s, Obj: -130.059056, Mem: 47.2MB
+  Classical: 0.007s, Obj: -490.383700, Mem: 0.0MB
+
+15 Assets (15 Qubits):
+  Quantum: 11.270s, Obj: -480.434394, Mem: 60.2MB
+  Classical: 0.009s, Obj: -490.400663, Mem: 0.0MB
+
+16 Assets (16 Qubits):
+  Quantum: 18.367s, Obj: 0.000000, Mem: -120.8MB
+  Classical: 0.009s, Obj: -640.447635, Mem: 0.1MB
+
+17 Assets (17 Qubits):
+  Quantum: 33.101s, Obj: -630.486255, Mem: 104.8MB
+  Classical: 0.009s, Obj: -640.439636, Mem: 0.1MB
+
+18 Assets (18 Qubits):
+  Quantum: 65.644s, Obj: 0.000000, Mem: 116.3MB
+  Classical: 0.010s, Obj: -810.492284, Mem: 0.2MB
+
+19 Assets (19 Qubits):
+  Quantum: 138.773s, Obj: 189.078758, Mem: 233.3MB
+  Classical: 0.012s, Obj: -810.492133, Mem: -7.8MB
+
+
+ANALYSIS COMPLETED
+==================================================
+This scalability analysis provides insights into quantum portfolio optimization
+performance across different problem sizes, helping identify optimal operating
+ranges and scalability limitations.
