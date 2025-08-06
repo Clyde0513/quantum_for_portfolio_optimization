@@ -61,7 +61,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Real Vanguard Data
+## Real Vanguard Data Example 1
 
 ### Constraint Analysis of 20 bonds, basket size 10 (Some constraints because we made the characteristic ranges from 1.6 to 2.0 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis]
 
@@ -74,6 +74,20 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 |------------------|-------------|-----------|----------------|-----------------|------- |
 | **Quantum**      |      6      | 0.0663    | 0.2698         | **1.3365**      |-42359  |
 | **Classical**    |      6      | 0.0766    | 0.2633         | **2.3533**      |-42351  |
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Real Vanguard Data Example 2
+
+### Constraint Analysis of 20 bonds, basket size 10 (Characteristic ranges from 0.4 to 0.8 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis-1]
+
+Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
+-- So if we have 20 bonds --> min (8, max(5, 6)) --> min(8,6) --> 6 basket size
+
+| Solution         | Basket Size | Cash Flow | Characteristic | Total Violation | Cost   |
+|------------------|-------------|-----------|----------------|-----------------|------- |
+| **Quantum**      |      6      | 0.0624    | 0.2698         | **0.1326**      |-42100  |
+| **Classical**    |      6      | 0.0785    | 0.2792         | **1.1392**      |-42102  |
 
 ### Enhanced VQE Implementation
 
@@ -140,7 +154,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
    - Top 10 quantum solutions with frequency and feasibility analysis
    - Comprehensive constraint satisfaction metrics
 
-## Real Data Example output for exploring aprt 3 of steps1-5.py (WITH Lightning.GPU (20 qubits))
+## Real Data Example 1 output for exploring part 3 of steps1-5.py (WITH Lightning.GPU (20 qubits))
 
 ```text
 === Hardware-Optimized Quantum Portfolio Optimization ===
@@ -369,6 +383,247 @@ Solution 7: Cost = -36451.70, Frequency = 32
 Solution 8: Cost = -36446.99, Frequency = 31
 Solution 9: Cost = -22540.13, Frequency = 29
 Solution 10: Cost = -30455.63, Frequency = 28
+
+```
+
+## Real Data Example 2 output for exploring part 3 of steps1-5.py (WITH Lightning.GPU (20 qubits))
+```text
+== Hardware-Optimized Quantum Portfolio Optimization ===
+
+=== Loading Real Vanguard Portfolio Data ===
+Loading Vanguard VCIT bond portfolio data...
+Successfully loaded 2629 bond positions from Vanguard portfolio
+Dataset dimensions: 2629 assets x 278 features
+Filtered to 2618 bond positions
+Selected top 20 holdings by market value for optimization
+  Returns calculated from OAS (credit spreads): 90 bps average
+  Risk calculated from duration (avg: 5.85 years) and credit spreads
+  Correlation matrix estimated from sector/credit clustering (avg: 0.303)
+  Weights calculated from market values (largest: 0.134)
+
+Portfolio Analysis Summary:
+  Fund: VCIT ($2,665,535,685)
+  Average Duration: 5.85 years
+  Average Credit Spread: 90 basis points
+  Expected Returns: [0.049, 0.074]
+  Risk Measures: [0.044, 0.070]
+  Sector Distribution: ['Financial', 'Industrial', 'Treasury Bond Portfolio']
+
+=== Real Portfolio Characteristics ===
+Fund: VCIT
+Portfolio size: 20 bonds (quantum optimized)
+Average duration: 5.85 years
+Average credit spread: 90 basis points
+Returns range: [0.049, 0.074]
+Risk range: [0.044, 0.070]
+Sample bonds: ['US91282CLN91', 'US87264ABF12', 'US06051GLH01']
+
+=== Quantum Optimization Problem Setup ===
+Real Vanguard bonds: 20, Target portfolio: 6
+Data source: vanguard_real
+Fund: VCIT ($2,665,535,685)
+
+Real Market Parameters:
+  Expected returns (m): [4.91, 7.35]%
+  Return bounds (M): [5.89, 8.82]%
+  Risk measures (i_c): [0.444, 0.699]
+  Position weights (x_c): [1.475, 5.360]
+
+Portfolio Constraints:
+  Target basket size: 6 bonds
+  Yield range: [3.0%, 6.0%]
+  Duration target: 0.058
+  Risk aversion: 2.0
+
+Sample Real Bonds:
+  US91282CLN91: Return=0.049, Risk=0.045
+  US87264ABF12: Return=0.057, Risk=0.048
+  US06051GLH01: Return=0.061, Risk=0.065
+  US00287YBX67: Return=0.054, Risk=0.045
+  US716973AE24: Return=0.059, Risk=0.068
+
+Optimization ready: 20 real Vanguard bonds → 6 quantum portfolio
+
+=== Building QUBO with Real Bond Data ===
+Covariance matrix built from real bond correlations: (20, 20)
+QUBO matrix Q shape: (20, 20)
+
+=== Initializing Optimized Components ===
+Hardware Config:
+  CPUs: 16, Memory: 7.3GB
+  Recommended: {'qaoa_layers': 3, 'shots': 36681, 'restarts': 6, 'processes': 4, 'batch_size': 100}
+Main device: lightning.gpu
+Circuit Analysis:
+  Significant gates: 210
+  Estimated memory: 16.01 MB
+
+=== Starting Optimized Training ===
+QAOA layers: 3, Restarts: 6
+
+--- Restart 1/6 ---
+  Iter   0: -8617.0178 | Cache: 1/500 entries, 0.0% hit rate
+  Iter  50: 1317.2524 | Cache: 51/500 entries, 0.0% hit rate
+  Iter 100: 1304.5634 | Cache: 101/500 entries, 0.0% hit rate
+  Iter 150: 1716.1425 | Cache: 151/500 entries, 0.0% hit rate
+New best: -3464.7871
+
+--- Restart 2/6 ---
+  Iter   0: -1069.8705 | Cache: 201/500 entries, 0.0% hit rate
+  Iter  50: -439.2024 | Cache: 251/500 entries, 0.0% hit rate
+  Iter 100: 331.4856 | Cache: 301/500 entries, 0.0% hit rate
+  Iter 150: 261.3003 | Cache: 351/500 entries, 0.0% hit rate
+
+--- Restart 3/6 ---
+  Iter   0: 393.2238 | Cache: 401/500 entries, 0.0% hit rate
+  Iter  50: -1240.2969 | Cache: 451/500 entries, 0.0% hit rate
+  Iter 100: -249.7027 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150: -464.9459 | Cache: 500/500 entries, 0.0% hit rate
+
+--- Restart 4/6 ---
+  Iter   0: 141.7047 | Cache: 500/500 entries, 0.0% hit rate
+  Iter  50: 126.1367 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 100: -323.2413 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150: 529.7106 | Cache: 500/500 entries, 0.0% hit rate
+
+--- Restart 5/6 ---
+  Iter   0:  27.0196 | Cache: 500/500 entries, 0.0% hit rate
+  Iter  50: 462.4843 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 100: -46.0504 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150: -140.0843 | Cache: 500/500 entries, 0.0% hit rate
+
+--- Restart 6/6 ---
+  Iter   0: -801.4223 | Cache: 500/500 entries, 0.0% hit rate
+  Iter  50: 508.8128 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 100: -144.8660 | Cache: 500/500 entries, 0.0% hit rate
+  Iter 150: -481.7243 | Cache: 500/500 entries, 0.0% hit rate
+
+=== Optimized Sampling ===
+Sampling: 36681 shots in 0.27s
+
+Top quantum solutions:
+   1. Cost: -42100.10, Freq:   34
+   2. Cost: -42100.79, Freq:   33
+   3. Cost: -42100.68, Freq:   33
+   4. Cost: -42100.79, Freq:   30
+   5. Cost: -42100.68, Freq:   27
+   6. Cost: -42100.05, Freq:   25
+   7. Cost: -42100.10, Freq:   22
+   8. Cost: -42100.68, Freq:   21
+   9. Cost: -42100.10, Freq:   19
+  10. Cost: -42100.68, Freq:   19
+
+Classical benchmark...
+
+=== Hardware-Optimized Performance Summary ===
+Backend: lightning.gpu
+Circuit gates: 210 (optimized)
+Memory usage: 16.01 MB
+
+Timing:
+  Training: 1604.53s
+  Sampling: 0.27s
+  Classical: 0.12s
+  Total quantum: 1604.80s
+
+Results:
+  Best quantum cost: -42100.7901
+  Best classical cost: -42102.4849
+  Quantum advantage: 1.000x
+
+System Performance:
+  Peak CPU: 0.0%
+  Peak Memory: 3575.3 MB
+  Duration: 1609.7s
+
+Optimization Stats:
+  Cache: 500/500 entries, 0.0% hit rate
+  Best quantum cost: -42100.7901
+
+Quantum Solution Analysis:
+  Selected 6 bonds (target: 6):
+    1. US06051GMA49: Return=0.062, Risk=0.070
+    2. US46647PDR47: Return=0.061, Risk=0.066
+    3. US95000U3F88: Return=0.062, Risk=0.067
+    4. US031162DR88: Return=0.060, Risk=0.066
+    5. US95000U3B74: Return=0.057, Risk=0.067
+    6. US95000U3D31: Return=0.062, Risk=0.066
+  Portfolio metrics:
+    Cash flow: 0.0624 (target: [3.0%, 6.0%])
+    Risk characteristic: 0.2698 (target: [0.4, 0.8])
+    Average return: 0.060 (6.0%)
+    Average risk: 0.067 (6.7%)
+    Total constraint violation: 0.1326
+
+Classical Solution Analysis:
+  Selected 7 bonds (target: 6):
+    1. US06051GLH01: Return=0.061, Risk=0.065
+    2. US716973AE24: Return=0.059, Risk=0.068
+    3. US097023CY98: Return=0.062, Risk=0.046
+    4. US46647PDH64: Return=0.059, Risk=0.062
+    5. US95000U3F88: Return=0.062, Risk=0.067
+    6. US06051GLU12: Return=0.062, Risk=0.068
+    7. US17327CAR43: Return=0.064, Risk=0.064
+  Portfolio metrics:
+    Cash flow: 0.0785 (target: [3.0%, 6.0%])
+    Risk characteristic: 0.2792 (target: [0.4, 0.8])
+    Average return: 0.061 (6.1%)
+    Average risk: 0.063 (6.3%)
+    Total constraint violation: 1.1392
+
+=== Final Assessment ===
+QUANTUM ADVANTAGE: Better constraint satisfaction
+
+Final Quantum Solution Analysis:
+  Selected 6 bonds (target: 6):
+    1. US06051GMA49: Return=0.062, Risk=0.070
+    2. US46647PDR47: Return=0.061, Risk=0.066
+    3. US95000U3F88: Return=0.062, Risk=0.067
+    4. US031162DR88: Return=0.060, Risk=0.066
+    5. US95000U3B74: Return=0.057, Risk=0.067
+    6. US95000U3D31: Return=0.062, Risk=0.066
+  Portfolio metrics:
+    Cash flow: 0.0624 (target: [3.0%, 6.0%])
+    Risk characteristic: 0.2698 (target: [0.4, 0.8])
+    Average return: 0.060 (6.0%)
+    Average risk: 0.067 (6.7%)
+    Total constraint violation: 0.1326
+
+=== Real Data Integration Impact ===
+Data source: vanguard_real (VCIT)
+Real portfolio: $2,665,535,685 market value
+Authentic bonds: 20 from 20 total positions
+Real correlations: Avg 0.303
+Actual risk-return: Duration 5.8y, Spread 90bp
+
+=== Hardware Optimization Impact ===
+Backend: lightning.gpu (hardware-optimized)
+Circuit gates: 210 (memory-optimized)
+Caching: Cache: 500/500 entries, 0.0% hit rate
+Monitoring: Peak 3575MB
+Configuration: 3 layers, 6 restarts
+
+Top 10 Quantum Solutions Data for Plotting:
+Solution 1: Cost = 29872.48, Frequency = 34
+Solution 2: Cost = -12122.31, Frequency = 33
+Solution 3: Cost = 13873.46, Frequency = 33
+Solution 4: Cost = -123.77, Frequency = 30
+Solution 5: Cost = 13872.26, Frequency = 27
+Solution 6: Cost = -12119.02, Frequency = 25
+Solution 7: Cost = 29872.02, Frequency = 22
+Solution 8: Cost = 13873.14, Frequency = 21
+Solution 9: Cost = 29872.75, Frequency = 19
+Solution 10: Cost = 29872.96, Frequency = 19
+
+=== Creating Real Vanguard Portfolio Analysis Plots ===
+Data: VCIT with 20 real bonds
+Saving plots to: vanguard_quantum_analysis/
+  Saved: vanguard_quantum_analysis/20250806_015105_performance_dashboard.png
+  Saved: vanguard_quantum_analysis/20250806_015106_top_solutions_analysis.png
+  Saved: vanguard_quantum_analysis/20250806_015107_portfolio_composition.png
+  Saved: vanguard_quantum_analysis/20250806_015108_constraint_satisfaction.png
+  Saved: vanguard_quantum_analysis/20250806_015109_system_performance.png
+  Saved: vanguard_quantum_analysis/20250806_015110_qubo_structure.png
+  Saved: vanguard_quantum_analysis/20250806_015111_solution_quality.png
 
 ```
 
