@@ -651,7 +651,7 @@ sns.set_palette("husl")
 
 # Create output directory for plots
 import os
-plot_dir = "vanguard_quantum_analysis"
+plot_dir = "vanguard_quantum_analysis-2"
 os.makedirs(plot_dir, exist_ok=True)
 
 print(f"\n=== Creating Real Vanguard Portfolio Analysis Plots ===")
