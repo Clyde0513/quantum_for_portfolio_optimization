@@ -78,7 +78,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 | Solution         | Basket Size | Cash Flow | Characteristic | Total Violation | Cost   |
 |------------------|-------------|-----------|----------------|-----------------|------- |
 | **Quantum**      |      8      | 0.0900    | 0.3478         | **0.0822**      |-72117  |
-| **Classical**    |      8      | 0.0955    | 0.3793         | **1.0562**      |-72122  |
+| **Classical**    |    9/8      | 0.0955    | 0.3793         | **1.0562**      |-72122  |
 
 ### Enhanced VQE Implementation
 
