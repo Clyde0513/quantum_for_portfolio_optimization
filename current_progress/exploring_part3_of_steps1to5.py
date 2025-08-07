@@ -23,36 +23,51 @@ from vanguard_data_loader import load_vanguard_portfolio_data
 
 print("=== Hardware-Optimized Quantum Portfolio Optimization ===\n")
 
-# 1. Hardware-Specific Backend Selection
+# 1. Hardware-Specific Backend Selection with Memory Management
 def setup_optimized_backend(n_qubits, shots=None):
-    """Setup the best available backend with GPU support"""
+    """Setup the best available backend with memory-aware selection"""
     device_kwargs = {"wires": n_qubits}
     if shots is not None:
         device_kwargs["shots"] = shots
     
-    # Try GPU first
-    try:
-        # import cupy as cp
-        # gpu_count = cp.cuda.runtime.getDeviceCount()
-        # if gpu_count > 0:
+    # Calculate memory requirements
+    state_memory_gb = (2**n_qubits * 16) / (1024**3)  # Complex128 state vector
+    available_memory_gb = psutil.virtual_memory().total / (1024**3)
+    
+    print(f"Memory Analysis for {n_qubits} qubits:")
+    print(f"  Required: {state_memory_gb:.2f} GB")
+    print(f"  Available: {available_memory_gb:.2f} GB")
+    
+    # GPU memory check (typical GPU has 8-24GB)
+    if n_qubits <= 28 and state_memory_gb < 8:  # Conservative GPU limit
         try:
             device = qml.device('lightning.gpu', **device_kwargs)
-            # print(f"Using GPU acceleration with {gpu_count} GPU(s)")
+            print(f"Using GPU acceleration (Lightning GPU)")
             return device, "lightning.gpu"
         except Exception as e:
-                print(f"GPU backend failed: {str(e)[:50]}...")
-    except ImportError:
-        print("GPU libraries not available")
+            print(f"GPU backend failed: {str(e)[:100]}...")
+            print("Falling back to CPU backend")
+    else:
+        print(f"Skipping GPU: {n_qubits} qubits too large for typical GPU memory")
     
-    # Fallback to optimized CPU
+    # CPU memory check
+    if state_memory_gb < available_memory_gb * 0.7:  # Use max 70% of available RAM
+        try:
+            device = qml.device('lightning.qubit', **device_kwargs)
+            print(f"Using optimized CPU backend (Lightning CPU)")
+            return device, "lightning.qubit"
+        except Exception as e:
+            print(f"Lightning CPU failed: {str(e)[:100]}...")
+    else:
+        print(f"Warning: May exceed available memory ({state_memory_gb:.1f}GB needed)")
+    
+    # Last resort - default backend (slowest but most memory efficient)
     try:
-        device = qml.device('lightning.qubit', **device_kwargs)
-        print("Using optimized CPU backend (Lightning)")
-        return device, "lightning.qubit"
-    except:
         device = qml.device('default.qubit', **device_kwargs)
-        print("Using default backend (slower)")
+        print("Using default backend (memory-efficient but slower)")
         return device, "default.qubit"
+    except Exception as e:
+        raise RuntimeError(f"All backends failed for {n_qubits} qubits: {e}")
 
 # 2. Memory-Optimized Circuit Construction
 class OptimizedCircuitBuilder:
@@ -191,26 +206,52 @@ class PerformanceMonitor:
             'peak_memory': np.max(mem_vals)
         }
 
-# 5. Adaptive Resource Manager
+# 5. Adaptive Resource Manager with Memory Limits
 class ResourceManager:
     @staticmethod
     def get_optimal_config(n_qubits):
-        """Get optimal configuration based on hardware"""
+        """Get optimal configuration based on hardware and problem size"""
         cpu_count = psutil.cpu_count()
         memory_gb = psutil.virtual_memory().total / (1024**3)
         
+        # Calculate quantum state memory requirements
+        state_memory_gb = (2**n_qubits * 16) / (1024**3)
+        
+        # Adaptive configuration based on problem size
+        if n_qubits <= 20:
+            # Small problems - use full resources
+            qaoa_layers = min(6, max(2, int(memory_gb // 2)))
+            shots = min(100000, int(memory_gb * 5000))
+            restarts = min(cpu_count, max(2, n_qubits // 3))
+        elif n_qubits <= 25:
+            # Medium problems - reduce resources
+            qaoa_layers = min(4, max(2, int(memory_gb // 4)))
+            shots = min(50000, int(memory_gb * 2000))
+            restarts = min(cpu_count // 2, max(2, n_qubits // 4))
+        else:
+            # Large problems - minimal resources
+            qaoa_layers = min(3, max(1, int(memory_gb // 8)))
+            shots = min(10000, int(memory_gb * 500))
+            restarts = min(cpu_count // 4, max(1, n_qubits // 6))
+        
         config = {
-            # 'qaoa_layers': min(6, max(2, int(memory_gb // 2))),
-            'qaoa_layers': 15,  # More layers for larger problems
-            'shots': min(100000, int(memory_gb * 5000)),
-            'restarts': min(cpu_count, max(2, n_qubits // 3)),
-            'processes': min(cpu_count - 1, 4),
-            'batch_size': max(100, int(10000 / (2**max(0, n_qubits-10))))
+            'qaoa_layers': qaoa_layers,
+            'shots': shots,
+            'restarts': restarts,
+            'processes': min(cpu_count - 1, 2),  # Conservative process count
+            'batch_size': max(100, int(10000 / (2**max(0, n_qubits-10)))),
+            'state_memory_gb': state_memory_gb
         }
         
-        print(f"Hardware Config:")
+        print(f"Hardware Config for {n_qubits} qubits:")
         print(f"  CPUs: {cpu_count}, Memory: {memory_gb:.1f}GB")
+        print(f"  State memory needed: {state_memory_gb:.2f}GB")
         print(f"  Recommended: {config}")
+        
+        # Memory warning
+        if state_memory_gb > memory_gb * 0.8:
+            print(f"  WARNING: May exceed available memory!")
+            print(f"  Consider reducing problem size to <25 qubits")
         
         return config
 
@@ -221,7 +262,9 @@ print("=== Loading Real Vanguard Portfolio Data ===")
 from vanguard_data_loader import load_vanguard_portfolio_data
 
 # Load portfolio data with desired number of assets for quantum optimization
-n_assets_target = 15 # Optimal size for quantum hardware
+# For 31 qubits: Uncomment next line and comment the conservative line
+# n_assets_target = 31  # WARNING: Requires 17+ GB RAM, may cause out-of-memory errors
+n_assets_target = 24
 portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
 
 # Extract key portfolio information
@@ -235,7 +278,9 @@ portfolio_info = portfolio_data['portfolio_info']  # Portfolio metadata
 
 print(f"\n=== Real Portfolio Characteristics ===")
 print(f"Fund: {portfolio_info['fund_name']}")
-print(f"Portfolio size: {n} bonds (quantum optimized)")
+print(f"Portfolio size: {n} bonds (memory-optimized)")
+print(f"Memory requirement: {(2**n * 16) / (1024**3):.2f} GB")
+print(f"Note: For 31 qubits, you would need {(2**31 * 16) / (1024**3):.1f} GB RAM")
 print(f"Average duration: {portfolio_info['avg_duration']:.2f} years")
 print(f"Average credit spread: {portfolio_info['avg_credit_spread']:.0f} basis points")
 print(f"Returns range: [{expected_returns.min():.3f}, {expected_returns.max():.3f}]")
@@ -244,7 +289,7 @@ print(f"Sample bonds: {asset_names[:3]}")
 
 # Convert to quantum optimization parameters based on real bond characteristics
 # These parameters are derived from actual Vanguard bond properties
-
+    
 # Market parameters derived from real expected returns and risks
 m = expected_returns * 100  # Convert to percentage scale for optimization
 M = expected_returns * 120  # Upper bounds (20% above expected)
@@ -350,16 +395,79 @@ print(f"QUBO matrix Q shape: {Q.shape}")
 def classical_objective(x):
     return x.T @ Q @ x + q.T @ x
 
-# 8. Initialize Optimization Components
+# 8. Initialize Optimization Components with Memory Check
 print("\n=== Initializing Optimized Components ===")
+
+# Memory safety check
+state_memory_gb = (2**n * 16) / (1024**3)
+available_memory_gb = psutil.virtual_memory().available / (1024**3)
+
+if state_memory_gb > available_memory_gb * 0.8:
+    print(f"ERROR: Insufficient memory for {n} qubits!")
+    print(f"  Required: {state_memory_gb:.2f} GB")
+    print(f"  Available: {available_memory_gb:.2f} GB")
+    print(f"  Reducing problem size to 24 qubits...")
+    
+    # Fallback to smaller problem
+    n_assets_target = 24
+    portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
+    n = len(portfolio_data['returns'])
+    expected_returns = portfolio_data['returns']
+    risk_measures = portfolio_data['risks']
+    correlation_matrix = portfolio_data['correlations']
+    asset_names = portfolio_data['asset_names']
+    current_weights = portfolio_data['weights']
+    portfolio_info = portfolio_data['portfolio_info']
+    
+    # Recalculate optimization parameters for smaller problem
+    m = expected_returns * 100
+    M = expected_returns * 120
+    i_c = risk_measures * 10
+    delta_c = np.ones(n) * 0.1
+    N = min(8, max(5, n // 3))
+    x_c = current_weights * n * 2
+    beta = risk_measures.reshape(-1, 1)
+    char_coeff = beta[:, j] * i_c
+    a_cf = (m * delta_c * x_c) / (100 * mvb)
+    
+    # Rebuild QUBO for smaller problem
+    Q = np.zeros((n, n))
+    q = np.zeros(n)
+    
+    for i in range(n):
+        for k in range(n):
+            Q[i, k] += w * beta[i, j] * beta[k, j] * x_c[i] * x_c[k]
+            Q[i, k] += 0.1 * correlation_matrix[i, k] * risk_measures[i] * risk_measures[k]
+    
+    for i in range(n):
+        q[i] += -2 * w * beta[i, j] * x_c[i] * k_target_lj
+        q[i] += -0.5 * expected_returns[i]
+    
+    Q += lambda_size * np.ones((n, n))
+    np.fill_diagonal(Q, np.diag(Q) - lambda_size)
+    q += -2 * lambda_size * N * np.ones(n)
+    
+    Q += lambda_RCup * np.outer(a_cf, a_cf)
+    q += -2 * lambda_RCup * rc_max * a_cf
+    Q += lambda_RClo * np.outer(a_cf, a_cf)
+    q += -2 * lambda_RClo * rc_min * a_cf
+    
+    Q += lambda_char * np.outer(char_coeff, char_coeff)
+    q += -2 * lambda_char * b_up * char_coeff
+    Q += lambda_char * np.outer(char_coeff, char_coeff)
+    q += -2 * lambda_char * b_lo * char_coeff
+    
+    Q = (Q + Q.T) / 2
+    
+    print(f"Rebuilt problem with {n} bonds, memory: {(2**n * 16) / (1024**3):.2f} GB")
 
 # Get hardware configuration
 config = ResourceManager.get_optimal_config(n)
 p = config['qaoa_layers']
 
-# Setup optimized backend
+# Setup optimized backend with memory awareness
 dev, backend_name = setup_optimized_backend(n)
-print(f"Main device: {backend_name}")
+print(f"Selected backend: {backend_name} for {n} qubits")
 
 # Initialize circuit optimizer
 circuit_builder = OptimizedCircuitBuilder(n)
@@ -397,24 +505,59 @@ def optimized_circuit(params):
         [qml.Identity(0)] + [qml.PauliZ(i) for i in range(n)] + [qml.PauliZ(i) @ qml.PauliZ(j) for i in range(n) for j in range(i+1,n) if abs(Q[i,j]) > 1e-10]
     ))
 
-# 10. Optimized Training with Caching
-print(f"\n=== Starting Optimized Training ===")
+# 10. Optimized Training with Memory Management
+print(f"\n=== Starting Memory-Aware Training ===")
+print(f"Problem size: {n} qubits")
 print(f"QAOA layers: {p}, Restarts: {config['restarts']}")
+print(f"Expected memory: {config['state_memory_gb']:.2f} GB")
+
+# Memory monitoring function
+def check_memory():
+    """Check current memory usage"""
+    process = psutil.Process()
+    memory_mb = process.memory_info().rss / 1024**2
+    available_gb = psutil.virtual_memory().available / (1024**3)
+    return memory_mb, available_gb
 
 # Start performance monitoring
 monitor.start()
 
 def cached_objective(params):
-    """Cached version of circuit evaluation"""
-    return cache.get_or_compute(params, optimized_circuit)
+    """Cached version of circuit evaluation with error handling"""
+    try:
+        return cache.get_or_compute(params, optimized_circuit)
+    except Exception as e:
+        if "out of memory" in str(e).lower():
+            print(f"Memory error during circuit execution: {str(e)[:100]}...")
+            print("Trying to free memory and retry with smaller batch...")
+            gc.collect()
+            # Return a high penalty cost to avoid this parameter region
+            return 1e6
+        else:
+            raise e
+
+initial_memory, available_memory = check_memory()
+print(f"Initial memory: {initial_memory:.1f} MB, Available: {available_memory:.2f} GB")
 
 best_params = None
 best_cost = float('inf')
 training_start = time.time()
 
-# Perform multiple restarts with different initialization strategies
+# Perform multiple restarts with memory checks
 for restart in range(config['restarts']):
     print(f"\n--- Restart {restart + 1}/{config['restarts']} ---")
+    
+    # Check memory before each restart
+    current_memory, available_memory = check_memory()
+    if available_memory < 1.0:  # Less than 1GB available
+        print(f"Low memory warning: {available_memory:.2f} GB available")
+        print("Performing garbage collection...")
+        gc.collect()
+        current_memory, available_memory = check_memory()
+        
+        if available_memory < 0.5:  # Less than 500MB available
+            print("Stopping early due to memory constraints")
+            break
     
     # Smart initialization
     if restart == 0:
