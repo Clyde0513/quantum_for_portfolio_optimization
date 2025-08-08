@@ -12,7 +12,7 @@ The goal of this project is to solve a Quadratic Unconstrained Binary Optimizati
 
 ## Real Vanguard Data Example 1 (3 QAOA layers deep)
 
-### Constraint Analysis of 20 bonds, basket size 10 (Some constraints because we made the characteristic ranges from 1.6 to 2.0 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis]
+### Constraint Analysis of 20 bonds, basket size 6 (Some constraints because we made the characteristic ranges from 1.6 to 2.0 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis]
 
 ## In the next run, we will make the characteristic range realistic now, just experimenting with it
 
@@ -28,7 +28,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 ## Real Vanguard Data Example 2 (3 QAOA layers deep)
 
-### Constraint Analysis of 20 bonds, basket size 10 (Characteristic ranges from 0.4 to 0.8 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis-1]
+### Constraint Analysis of 20 bonds, basket size 6 (Characteristic ranges from 0.4 to 0.8 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis-1]
 
 Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
 -- So if we have 20 bonds --> min (8, max(5, 6)) --> min(8,6) --> 6 basket size
@@ -42,7 +42,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 ## Real Vanguard Data Example 3
 
-### Constraint Analysis of 15 bonds, basket size 10 (3 QAOA layers deep)
+### Constraint Analysis of 15 bonds, basket size 5 (3 QAOA layers deep)
 
 Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
 -- So if we have 15 bonds --> min (8, max(5, 5)) --> min(8,5) --> 5 basket size
@@ -56,7 +56,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 ## Real Vanguard Data Example 4
 
-### Constraint Analysis of 15 bonds, basket size 10 (15 QAOA layers deep) (Graphs under vanguard_quantum_analysis-3 folder)
+### Constraint Analysis of 15 bonds, basket size 5  (15 QAOA layers deep) (Graphs under vanguard_quantum_analysis-3 folder)
 
 Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
 -- So if we have 15 bonds --> min (8, max(5, 5)) --> min(8,5) --> 5 basket size
