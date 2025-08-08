@@ -2,7 +2,7 @@
 
 ## **Dataset Analysis Summary**
 
-### **Portfolio Characteristics (VCIT Fund)**
+### **Portfolio Characteristics (Fund)**
 
 - **Total Assets**: 2,629 individual bond positions
 - **Fund Size**: ~$50.7 billion market value
