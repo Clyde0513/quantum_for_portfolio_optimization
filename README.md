@@ -4,9 +4,10 @@
 
 This project demonstrates a quantum approach to portfolio optimization using Variational Quantum Eigensolver (VQE) with QAOA ansatz and PennyLane. The implementation achieves competitive performance with classical methods while demonstrating  constraint satisfaction capabilities. This is a Hackathon for Wiser's Project 2: Quantum for Portfolio Optimization.
 
-Team Name: Team Super(Position)
-Clyde Villacrusis: gst-RGv39A8K2CxnOWG
-Sanskriti Shindadkar: 
+## Team Information 
+- Team Name: Team Super(Position)
+- Clyde Villacrusis: gst-RGv39A8K2CxnOWG
+- Sanskriti Shindadkar: gst-WbZV2NEGnMyfSje
 
 ## Overview
 
