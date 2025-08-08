@@ -1,4 +1,4 @@
-# Vanguard Data Information
+# V Data Information
 
 ## **Dataset Analysis Summary**
 
@@ -42,7 +42,7 @@
 
 ### **Real Data Processing**
 
-- Loads 2,629 actual Vanguard bond positions
+- Loads 2,629 actual V bond positions
 - Filters to top holdings by market value for quantum feasibility
 - Calculates expected returns from credit spreads (OAS)
 - Derives risk measures from duration and credit volatility
@@ -63,18 +63,18 @@
 Replace the data loading section in your quantum code with:
 
 ```python
-from vanguard_data_loader import get_quantum_optimization_data
+from v_data_loader import get_quantum_optimization_data
 n, expected_returns, risk_measures, correlation_matrix, asset_names, data_source = get_quantum_optimization_data(n_assets=30)
 ```
 
 ### **Full Integration Example**
 
 ```python
-# Load real Vanguard data
-from vanguard_data_loader import load_vanguard_portfolio_data
+# Load real V data
+from v_data_loader import load_v_portfolio_data
 
 # Get comprehensive portfolio data
-portfolio_data = load_vanguard_portfolio_data(n_assets=50)
+portfolio_data = load_v_portfolio_data(n_assets=50)
 
 # Extract for quantum optimization
 returns = portfolio_data['returns']
@@ -93,7 +93,7 @@ print(f"Credit Spread: {portfolio_data['portfolio_info']['avg_credit_spread']:.0
 - Module imports correctly
 - Excel file loads (2,629 × 278 dimensions)
 - Data processing functions work
-- Real Vanguard data extracted:
+- Real V data extracted:
   - Returns: 4.9% to 7.4% (realistic bond yields)
   - Risks: 4.4% to 7.0% (appropriate volatilities)
   - 20-50 assets ready for quantum optimization

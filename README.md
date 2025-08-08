@@ -4,15 +4,19 @@
 
 This project demonstrates a quantum approach to portfolio optimization using Variational Quantum Eigensolver (VQE) with QAOA ansatz and PennyLane. The implementation achieves competitive performance with classical methods while demonstrating  constraint satisfaction capabilities. This is a Hackathon for Wiser's Project 2: Quantum for Portfolio Optimization.
 
+Team Name: Team Super(Position)
+Clyde Villacrusis: gst-RGv39A8K2CxnOWG
+Sanskriti Shindadkar: 
+
 ## Overview
 
 The goal of this project is to solve a Quadratic Unconstrained Binary Optimization (QUBO) problem for portfolio optimization. The problem is mapped to a quantum Hamiltonian, and the ground state of the Hamiltonian represents the optimal portfolio.
 
 ### Key Results
 
-## Real Vanguard Data Example 1 (3 QAOA layers deep)
+## Real Data Example 1 (3 QAOA layers deep)
 
-### Constraint Analysis of 20 bonds, basket size 6 (Some constraints because we made the characteristic ranges from 1.6 to 2.0 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis]
+### Constraint Analysis of 20 bonds, basket size 6 (Some constraints because we made the characteristic ranges from 1.6 to 2.0 but quantum still wins) [There's graphs for this in the folder called v_quantum_analysis]
 
 ## In the next run, we will make the characteristic range realistic now, just experimenting with it
 
@@ -26,9 +30,9 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Real Vanguard Data Example 2 (3 QAOA layers deep)
+## Real V Data Example 2 (3 QAOA layers deep)
 
-### Constraint Analysis of 20 bonds, basket size 6 (Characteristic ranges from 0.4 to 0.8 but quantum still wins) [There's graphs for this in the folder called vanguard_quantum_analysis-1]
+### Constraint Analysis of 20 bonds, basket size 6 (Characteristic ranges from 0.4 to 0.8 but quantum still wins) [There's graphs for this in the folder called v_quantum_analysis-1]
 
 Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
 -- So if we have 20 bonds --> min (8, max(5, 6)) --> min(8,6) --> 6 basket size
@@ -40,7 +44,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Real Vanguard Data Example 3
+## Real V Data Example 3
 
 ### Constraint Analysis of 15 bonds, basket size 5 (3 QAOA layers deep)
 
@@ -54,9 +58,9 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Real Vanguard Data Example 4
+## Real V Data Example 4
 
-### Constraint Analysis of 15 bonds, basket size 5  (15 QAOA layers deep) (Graphs under vanguard_quantum_analysis-3 folder)
+### Constraint Analysis of 15 bonds, basket size 5  (15 QAOA layers deep) (Graphs under v_quantum_analysis-3 folder)
 
 Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
 -- So if we have 15 bonds --> min (8, max(5, 5)) --> min(8,5) --> 5 basket size
@@ -68,9 +72,9 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Real Vanguard Data Example 5
+## Real V Data Example 5
 
-### Constraint Analysis of 24 bonds, basket size 8 (2 QAOA layers deep) (Graphs under vanguard_quantum_analysis-4 folder)
+### Constraint Analysis of 24 bonds, basket size 8 (2 QAOA layers deep) (Graphs under v_quantum_analysis-4 folder)
 
 Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loaded
 -- So if we have 24 bonds --> min (8, max(5, 8)) --> min(8,8) --> 8 basket size
@@ -97,7 +101,7 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
   - **Complexity:** Exponential classical search space vs polynomial VQE optimization
 
 - **Scaling Potential:**
-  - **Real-world portfolios:** 50-500+ assets (using vanguard data now!)
+  - **Real-world portfolios:** 50-500+ assets (using v data now!)
   - **Quantum advantage:** Expected at 20+ qubits where classical optimization becomes intractable
   - **Hybrid approaches:** Quantum sampling with classical post-processing proves effective (You can see more of this in the part 3 py file)
 
@@ -150,10 +154,10 @@ Basket Size: min(8, max(5, n // 3)), where n is the actual number of bonds loade
 ```text
 === Hardware-Optimized Quantum Portfolio Optimization ===
 
-=== Loading Real Vanguard Portfolio Data ===
+=== Loading Real V Portfolio Data ===
 
-Loading Vanguard VCIT bond portfolio data...
-Successfully loaded 2629 bond positions from Vanguard portfolio
+Loading V V bond portfolio data...
+Successfully loaded 2629 bond positions from V portfolio
 Dataset dimensions: 2629 assets x 278 features
 Filtered to 2618 bond positions
 Selected top 20 holdings by market value for optimization
@@ -163,7 +167,7 @@ Selected top 20 holdings by market value for optimization
   Weights calculated from market values (largest: 0.134)
 
 Portfolio Analysis Summary:
-  Fund: VCIT ($2,665,535,685)
+  Fund: V ($2,665,535,685)
   Average Duration: 5.85 years
   Average Credit Spread: 90 basis points
   Expected Returns: [0.049, 0.074]
@@ -171,7 +175,7 @@ Portfolio Analysis Summary:
   Sector Distribution: ['Financial', 'Industrial', 'Treasury Bond Portfolio']
 
 === Real Portfolio Characteristics ===
-Fund: VCIT
+Fund: V
 Portfolio size: 20 bonds (quantum optimized)
 Average duration: 5.85 years
 Average credit spread: 90 basis points
@@ -180,9 +184,9 @@ Risk range: [0.044, 0.070]
 Sample bonds: ['US91282CLN91', 'US87264ABF12', 'US06051GLH01']
 
 === Quantum Optimization Problem Setup ===
-Real Vanguard bonds: 20, Target portfolio: 6
-Data source: vanguard_real
-Fund: VCIT ($2,665,535,685)
+Real V bonds: 20, Target portfolio: 6
+Data source: v_real
+Fund: V ($2,665,535,685)
 
 Real Market Parameters:
   Expected returns (m): [4.91, 7.35]%
@@ -203,7 +207,7 @@ Sample Real Bonds:
   US00287YBX67: Return=0.054, Risk=0.045
   US716973AE24: Return=0.059, Risk=0.068
 
-Optimization ready: 20 real Vanguard bonds → 6 quantum portfolio
+Optimization ready: 20 real V bonds → 6 quantum portfolio
 
 === Building QUBO with Real Bond Data ===
 Covariance matrix built from real bond correlations: (20, 20)
@@ -350,7 +354,7 @@ Final Quantum Solution Analysis:
     Total constraint violation: 1.3365
 
 === Real Data Integration Impact ===
-Data source: vanguard_real (VCIT)
+Data source: v_real (V)
 Real portfolio: $2,665,535,685 market value
 Authentic bonds: 20 from 20 total positions
 Real correlations: Avg 0.303
@@ -382,9 +386,9 @@ Solution 10: Cost = -30455.63, Frequency = 28
 ```text
 == Hardware-Optimized Quantum Portfolio Optimization ===
 
-=== Loading Real Vanguard Portfolio Data ===
-Loading Vanguard VCIT bond portfolio data...
-Successfully loaded 2629 bond positions from Vanguard portfolio
+=== Loading Real V Portfolio Data ===
+Loading V V bond portfolio data...
+Successfully loaded 2629 bond positions from V portfolio
 Dataset dimensions: 2629 assets x 278 features
 Filtered to 2618 bond positions
 Selected top 20 holdings by market value for optimization
@@ -394,7 +398,7 @@ Selected top 20 holdings by market value for optimization
   Weights calculated from market values (largest: 0.134)
 
 Portfolio Analysis Summary:
-  Fund: VCIT ($2,665,535,685)
+  Fund: V ($2,665,535,685)
   Average Duration: 5.85 years
   Average Credit Spread: 90 basis points
   Expected Returns: [0.049, 0.074]
@@ -402,7 +406,7 @@ Portfolio Analysis Summary:
   Sector Distribution: ['Financial', 'Industrial', 'Treasury Bond Portfolio']
 
 === Real Portfolio Characteristics ===
-Fund: VCIT
+Fund: V
 Portfolio size: 20 bonds (quantum optimized)
 Average duration: 5.85 years
 Average credit spread: 90 basis points
@@ -411,9 +415,9 @@ Risk range: [0.044, 0.070]
 Sample bonds: ['US91282CLN91', 'US87264ABF12', 'US06051GLH01']
 
 === Quantum Optimization Problem Setup ===
-Real Vanguard bonds: 20, Target portfolio: 6
-Data source: vanguard_real
-Fund: VCIT ($2,665,535,685)
+Real V bonds: 20, Target portfolio: 6
+Data source: v_real
+Fund: V ($2,665,535,685)
 
 Real Market Parameters:
   Expected returns (m): [4.91, 7.35]%
@@ -434,7 +438,7 @@ Sample Real Bonds:
   US00287YBX67: Return=0.054, Risk=0.045
   US716973AE24: Return=0.059, Risk=0.068
 
-Optimization ready: 20 real Vanguard bonds → 6 quantum portfolio
+Optimization ready: 20 real V bonds → 6 quantum portfolio
 
 === Building QUBO with Real Bond Data ===
 Covariance matrix built from real bond correlations: (20, 20)
@@ -581,7 +585,7 @@ Final Quantum Solution Analysis:
     Total constraint violation: 0.1326
 
 === Real Data Integration Impact ===
-Data source: vanguard_real (VCIT)
+Data source: v_real (V)
 Real portfolio: $2,665,535,685 market value
 Authentic bonds: 20 from 20 total positions
 Real correlations: Avg 0.303
@@ -606,16 +610,6 @@ Solution 8: Cost = 13873.14, Frequency = 21
 Solution 9: Cost = 29872.75, Frequency = 19
 Solution 10: Cost = 29872.96, Frequency = 19
 
-=== Creating Real Vanguard Portfolio Analysis Plots ===
-Data: VCIT with 20 real bonds
-Saving plots to: vanguard_quantum_analysis/
-  Saved: vanguard_quantum_analysis/20250806_015105_performance_dashboard.png
-  Saved: vanguard_quantum_analysis/20250806_015106_top_solutions_analysis.png
-  Saved: vanguard_quantum_analysis/20250806_015107_portfolio_composition.png
-  Saved: vanguard_quantum_analysis/20250806_015108_constraint_satisfaction.png
-  Saved: vanguard_quantum_analysis/20250806_015109_system_performance.png
-  Saved: vanguard_quantum_analysis/20250806_015110_qubo_structure.png
-  Saved: vanguard_quantum_analysis/20250806_015111_solution_quality.png
 
 ```
 
@@ -624,9 +618,9 @@ Saving plots to: vanguard_quantum_analysis/
 ```text
 == Hardware-Optimized Quantum Portfolio Optimization ===
 
-=== Loading Real Vanguard Portfolio Data ===
-Loading Vanguard VCIT bond portfolio data...
-Successfully loaded 2629 bond positions from Vanguard portfolio
+=== Loading Real V Portfolio Data ===
+Loading V bond portfolio data...
+Successfully loaded 2629 bond positions from V portfolio
 Dataset dimensions: 2629 assets x 278 features
 Filtered to 2618 bond positions
 Selected top 15 holdings by market value for optimization
@@ -636,7 +630,7 @@ Selected top 15 holdings by market value for optimization
   Weights calculated from market values (largest: 0.166)
 
 Portfolio Analysis Summary:
-  Fund: VCIT ($2,153,890,208)
+  Fund: V ($2,153,890,208)
   Average Duration: 5.89 years
   Average Credit Spread: 91 basis points
   Expected Returns: [0.049, 0.074]
@@ -644,7 +638,7 @@ Portfolio Analysis Summary:
   Sector Distribution: ['Financial', 'Industrial', 'Treasury Bond Portfolio']
 
 === Real Portfolio Characteristics ===
-Fund: VCIT
+Fund: V
 Portfolio size: 15 bonds (quantum optimized)
 Average duration: 5.89 years
 Average credit spread: 91 basis points
@@ -653,9 +647,9 @@ Risk range: [0.045, 0.070]
 Sample bonds: ['US91282CLN91', 'US87264ABF12', 'US06051GLH01']
 
 === Quantum Optimization Problem Setup ===
-Real Vanguard bonds: 15, Target portfolio: 5
-Data source: vanguard_real
-Fund: VCIT ($2,153,890,208)
+Real V bonds: 15, Target portfolio: 5
+Data source: v_real
+Fund: V ($2,153,890,208)
 
 Real Market Parameters:
   Expected returns (m): [4.91, 7.35]%
@@ -676,7 +670,7 @@ Sample Real Bonds:
   US00287YBX67: Return=0.054, Risk=0.045
   US716973AE24: Return=0.059, Risk=0.068
 
-Optimization ready: 15 real Vanguard bonds → 5 quantum portfolio
+Optimization ready: 15 real V bonds → 5 quantum portfolio
 
 === Building QUBO with Real Bond Data ===
 Covariance matrix built from real bond correlations: (15, 15)
@@ -815,7 +809,7 @@ Final Quantum Solution Analysis:
     Total constraint violation: 0.1724
 
 === Real Data Integration Impact ===
-Data source: vanguard_real (VCIT)
+Data source: v_real (V)
 Real portfolio: $2,153,890,208 market value
 Authentic bonds: 15 from 15 total positions
 Real correlations: Avg 0.303
@@ -840,16 +834,7 @@ Solution 8: Cost = -28092.67, Frequency = 105
 Solution 9: Cost = -30072.90, Frequency = 101
 Solution 10: Cost = -30083.41, Frequency = 98
 
-=== Creating Real Vanguard Portfolio Analysis Plots ===
-Data: VCIT with 15 real bonds
-Saving plots to: vanguard_quantum_analysis-2/
-  Saved: vanguard_quantum_analysis-2/20250806_150442_performance_dashboard.png
-  Saved: vanguard_quantum_analysis-2/20250806_150443_top_solutions_analysis.png
-  Saved: vanguard_quantum_analysis-2/20250806_150443_portfolio_composition.png
-  Saved: vanguard_quantum_analysis-2/20250806_150445_constraint_satisfaction.png
-  Saved: vanguard_quantum_analysis-2/20250806_150446_system_performance.png
-  Saved: vanguard_quantum_analysis-2/20250806_150447_qubo_structure.png
-  Saved: vanguard_quantum_analysis-2/20250806_150448_solution_quality.png
+
 ```
 
 ## Real Data Example 4 output for exploring part 3 of steps1-5.py (With Lightning.GPU (15 qubits) but this time we tried increasing the QAOA Layers to 15 deep)
@@ -857,9 +842,9 @@ Saving plots to: vanguard_quantum_analysis-2/
 ```text
 === Hardware-Optimized Quantum Portfolio Optimization ===
 
-=== Loading Real Vanguard Portfolio Data ===
-Loading Vanguard VCIT bond portfolio data...
-Successfully loaded 2629 bond positions from Vanguard portfolio
+=== Loading Real V Portfolio Data ===
+Loading V V bond portfolio data...
+Successfully loaded 2629 bond positions from V portfolio
 Dataset dimensions: 2629 assets x 278 features
 Filtered to 2618 bond positions
 Selected top 15 holdings by market value for optimization
@@ -869,7 +854,7 @@ Selected top 15 holdings by market value for optimization
   Weights calculated from market values (largest: 0.166)
 
 Portfolio Analysis Summary:
-  Fund: VCIT ($2,153,890,208)
+  Fund: V ($2,153,890,208)
   Average Duration: 5.89 years
   Average Credit Spread: 91 basis points
   Expected Returns: [0.049, 0.074]
@@ -877,7 +862,7 @@ Portfolio Analysis Summary:
   Sector Distribution: ['Financial', 'Industrial', 'Treasury Bond Portfolio']
 
 === Real Portfolio Characteristics ===
-Fund: VCIT
+Fund: V
 Portfolio size: 15 bonds (quantum optimized)
 Average duration: 5.89 years
 Average credit spread: 91 basis points
@@ -886,9 +871,9 @@ Risk range: [0.045, 0.070]
 Sample bonds: ['US91282CLN91', 'US87264ABF12', 'US06051GLH01']
 
 === Quantum Optimization Problem Setup ===
-Real Vanguard bonds: 15, Target portfolio: 5
-Data source: vanguard_real
-Fund: VCIT ($2,153,890,208)
+Real V bonds: 15, Target portfolio: 5
+Data source: v_real
+Fund: V ($2,153,890,208)
 
 Real Market Parameters:
   Expected returns (m): [4.91, 7.35]%
@@ -909,7 +894,7 @@ Sample Real Bonds:
   US00287YBX67: Return=0.054, Risk=0.045
   US716973AE24: Return=0.059, Risk=0.068
 
-Optimization ready: 15 real Vanguard bonds → 5 quantum portfolio
+Optimization ready: 15 real V bonds → 5 quantum portfolio
 
 === Building QUBO with Real Bond Data ===
 Covariance matrix built from real bond correlations: (15, 15)
@@ -1047,7 +1032,7 @@ Final Quantum Solution Analysis:
     Total constraint violation: 0.1746
 
 === Real Data Integration Impact ===
-Data source: vanguard_real (VCIT)
+Data source: v_real (V)
 Real portfolio: $2,153,890,208 market value
 Authentic bonds: 15 from 15 total positions
 Real correlations: Avg 0.303
@@ -1072,16 +1057,7 @@ Solution 8: Cost = -24106.78, Frequency = 13
 Solution 9: Cost = -124.98, Frequency = 13
 Solution 10: Cost = -18110.81, Frequency = 13
 
-=== Creating Real Vanguard Portfolio Analysis Plots ===
-Data: VCIT with 15 real bonds
-Saving plots to: vanguard_quantum_analysis-2/
-  Saved: vanguard_quantum_analysis-2/20250806_155724_performance_dashboard.png
-  Saved: vanguard_quantum_analysis-2/20250806_155725_top_solutions_analysis.png
-  Saved: vanguard_quantum_analysis-2/20250806_155726_portfolio_composition.png
-  Saved: vanguard_quantum_analysis-2/20250806_155727_constraint_satisfaction.png
-  Saved: vanguard_quantum_analysis-2/20250806_155728_system_performance.png
-  Saved: vanguard_quantum_analysis-2/20250806_155729_qubo_structure.png
-  Saved: vanguard_quantum_analysis-2/20250806_155731_solution_quality.png
+
 ```
 
 ## Real Data Example 5 output for exploring part 3 of steps1-5.py (With Lightning.GPU (24 qubits), QAOA Layers of 2)
@@ -1089,9 +1065,9 @@ Saving plots to: vanguard_quantum_analysis-2/
 ```text
 === Hardware-Optimized Quantum Portfolio Optimization ===
 
-=== Loading Real Vanguard Portfolio Data ===
-Loading Vanguard VCIT bond portfolio data...
-Successfully loaded 2629 bond positions from Vanguard portfolio
+=== Loading Real V Portfolio Data ===
+Loading V V bond portfolio data...
+Successfully loaded 2629 bond positions from V portfolio
 Dataset dimensions: 2629 assets x 278 features
 Filtered to 2618 bond positions
 Selected top 24 holdings by market value for optimization
@@ -1101,7 +1077,7 @@ Selected top 24 holdings by market value for optimization
   Weights calculated from market values (largest: 0.117)
 
 Portfolio Analysis Summary:
-  Fund: VCIT ($3,047,237,649)
+  Fund: ($3,047,237,649)
   Average Duration: 5.91 years
   Average Credit Spread: 90 basis points
   Expected Returns: [0.049, 0.074]
@@ -1109,7 +1085,7 @@ Portfolio Analysis Summary:
   Sector Distribution: ['Financial', 'Industrial', 'Treasury Bond Portfolio']
 
 === Real Portfolio Characteristics ===
-Fund: VCIT
+Fund: V
 Portfolio size: 24 bonds (memory-optimized)
 Memory requirement: 0.25 GB
 Note: For 31 qubits, you would need 32.0 GB RAM
@@ -1120,9 +1096,9 @@ Risk range: [0.044, 0.070]
 Sample bonds: ['US91282CLN91', 'US87264ABF12', 'US06051GLH01']
 
 === Quantum Optimization Problem Setup ===
-Real Vanguard bonds: 24, Target portfolio: 8
-Data source: vanguard_real
-Fund: VCIT ($3,047,237,649)
+Real V bonds: 24, Target portfolio: 8
+Data source: v_real
+Fund: ($3,047,237,649)
 
 Real Market Parameters:
   Expected returns (m): [4.91, 7.35]%
@@ -1143,7 +1119,7 @@ Sample Real Bonds:
   US00287YBX67: Return=0.054, Risk=0.045
   US716973AE24: Return=0.059, Risk=0.068
 
-Optimization ready: 24 real Vanguard bonds → 8 quantum portfolio
+Optimization ready: 24 real V bonds → 8 quantum portfolio
 
 === Building QUBO with Real Bond Data ===
 Covariance matrix built from real bond correlations: (24, 24)
@@ -1309,7 +1285,7 @@ Final Quantum Solution Analysis:
     Total constraint violation: 0.0822
 
 === Real Data Integration Impact ===
-Data source: vanguard_real (VCIT)
+Data source: v_real 
 Real portfolio: $3,047,237,649 market value
 Authentic bonds: 24 from 24 total positions
 Real correlations: Avg 0.318
@@ -1334,16 +1310,6 @@ Solution 8: Cost = -30126.30, Frequency = 3
 Solution 9: Cost = -60127.51, Frequency = 3
 Solution 10: Cost = -70110.51, Frequency = 3
 
-=== Creating Real Vanguard Portfolio Analysis Plots ===
-Data: VCIT with 24 real bonds
-Saving plots to: vanguard_quantum_analysis-2/
-  Saved: vanguard_quantum_analysis-2/20250807_035343_performance_dashboard.png
-  Saved: vanguard_quantum_analysis-2/20250807_035344_top_solutions_analysis.png
-  Saved: vanguard_quantum_analysis-2/20250807_035345_portfolio_composition.png
-  Saved: vanguard_quantum_analysis-2/20250807_035346_constraint_satisfaction.png
-  Saved: vanguard_quantum_analysis-2/20250807_035347_system_performance.png
-  Saved: vanguard_quantum_analysis-2/20250807_035348_qubo_structure.png
-  Saved: vanguard_quantum_analysis-2/20250807_035350_solution_quality.png
 ```
 
 ## Key Features
@@ -1371,7 +1337,6 @@ Saving plots to: vanguard_quantum_analysis-2/
 - Detailed constraint satisfaction metrics
 - Classical benchmark comparison with simulated annealing
 - Cost ratio analysis and competitive assessment
-- Includes plots under the current_progress/vanguard_quantum_analysis and current_progress/vanguard_quantum_analysis-1
 
 ### **Algorithm Performance:**
 

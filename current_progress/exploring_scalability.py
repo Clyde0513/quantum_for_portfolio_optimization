@@ -41,7 +41,7 @@ warnings.filterwarnings('ignore')
 
 # Add current progress directory to path
 sys.path.append(os.path.join(os.getcwd()))
-from vanguard_data_loader import load_vanguard_portfolio_data
+from current_progress.v_data_loader import load_v_portfolio_data
 
 def monitor_memory():
     """Monitor current memory usage"""
@@ -528,7 +528,7 @@ def run_scalability_analysis():
         try:
             # Load portfolio data
             print(f"Loading portfolio data for {n_assets} assets...")
-            data = load_vanguard_portfolio_data(n_assets=n_assets)
+            data = load_v_portfolio_data(n_assets=n_assets)
             
             returns = data['returns']
             risks = data['risks']

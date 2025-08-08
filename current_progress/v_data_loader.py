@@ -1,11 +1,11 @@
 
 """
-Vanguard Data Loader for Quantum Portfolio Optimization
+V Data Loader for Quantum Portfolio Optimization
 
-This module loads and processes Vanguard bond portfolio data from Excel files,
+This module loads and processes V bond portfolio data from Excel files,
 converting it into the format required by the quantum portfolio optimization algorithm.
 
-The data comes from Vanguard's VCIT (Corporate Intermediate-Term Bond) fund containing:
+The data comes from V's fund containing:
 - 2,629 individual bond positions (primarily corporate bonds)
 - Real market values and position sizes  
 - Comprehensive risk measures: Duration vectors (KRD), credit spreads (OAS), credit ratings
@@ -27,18 +27,18 @@ from typing import Dict, Tuple, List, Optional
 import warnings
 warnings.filterwarnings('ignore')
 
-def load_vanguard_portfolio_data(file_path: str = "data_assets_dictionary.xlsx", n_assets: int = 50) -> Dict:
+def load_v_portfolio_data(file_path: str = "data_assets_dictionary.xlsx", n_assets: int = 50) -> Dict:
     """
-    Load Vanguard bond portfolio data from Excel file.
+    Load V bond portfolio data from Excel file.
     
-    The dataset contains 2,629 bond positions from Vanguard's VCIT fund with:
+    The dataset contains 2,629 bond positions from V fund with:
     - Real market values for portfolio weight calculation
     - Duration risk vectors (KRD) for interest rate sensitivity modeling
     - Credit spreads (OAS) and ratings for credit risk assessment
     - Sector classifications for diversification constraints
     
     Args:
-        file_path: Path to the Vanguard data Excel file (4.9MB with 278 columns)
+        file_path: Path to the V data Excel file (4.9MB with 278 columns)
         n_assets: Number of assets to select for optimization (default: 50 for quantum feasibility)
         
     Returns:
@@ -56,12 +56,12 @@ def load_vanguard_portfolio_data(file_path: str = "data_assets_dictionary.xlsx",
     
     try:
         # Load the Excel file using openpyxl engine
-        print("Loading Vanguard VCIT bond portfolio data...")
+        print("Loading V bond portfolio data...")
         df = pd.read_excel(file_path, engine='openpyxl')
-        print(f"Successfully loaded {len(df)} bond positions from Vanguard portfolio")
+        print(f"Successfully loaded {len(df)} bond positions from V portfolio")
         print(f"Dataset dimensions: {df.shape[0]} assets x {df.shape[1]} features")
-        
-        # Filter for corporate bonds only (main focus of VCIT fund)
+
+        # Filter for corporate bonds only (main focus of V fund)
         bond_data = df[df['secGroup'] == 'BND'].copy()
         print(f"Filtered to {len(bond_data)} bond positions")
         
@@ -83,7 +83,7 @@ def load_vanguard_portfolio_data(file_path: str = "data_assets_dictionary.xlsx",
         sector_info = extract_sector_classifications(bond_data)
         
         print(f"\nPortfolio Analysis Summary:")
-        print(f"  Fund: {portfolio_data['fund_name']} (${portfolio_data['total_market_value']:,.0f})")
+        print(f"  Fund: ${portfolio_data['total_market_value']:,.0f}")
         print(f"  Average Duration: {portfolio_data['avg_duration']:.2f} years")
         print(f"  Average Credit Spread: {portfolio_data['avg_credit_spread']:.0f} basis points")
         print(f"  Expected Returns: [{returns.min():.3f}, {returns.max():.3f}]")
@@ -100,11 +100,11 @@ def load_vanguard_portfolio_data(file_path: str = "data_assets_dictionary.xlsx",
             'portfolio_info': portfolio_data,
             'risk_factors': risk_factors,
             'sector_info': sector_info,
-            'data_source': 'vanguard_real'
+            'data_source': 'v_real'
         }
         
     except Exception as e:
-        print(f"Error loading Vanguard data: {e}")
+        print(f"Error loading V data: {e}")
         print("Falling back to synthetic data generation...")
         return generate_synthetic_fallback(n_assets)
 
@@ -114,7 +114,7 @@ def extract_portfolio_info(df: pd.DataFrame) -> Dict:
     total_mv = df['fund_enriched.mktValue'].sum()
     
     return {
-        'fund_name': df['portfolioName'].iloc[0] if 'portfolioName' in df.columns else 'VCIT',
+        'fund_name': df['portfolioName'].iloc[0] if 'portfolioName' in df.columns else 'V Fund',
         'n_assets': len(df),
         'currency': df['ccy'].iloc[0] if 'ccy' in df.columns else 'USD',
         'total_market_value': total_mv,
@@ -374,13 +374,13 @@ def generate_synthetic_fallback(n_assets: int = 50) -> Dict:
 # Integration function for quantum optimization code
 def get_quantum_optimization_data(n_assets: int = 20) -> Tuple:
     """
-    Load Vanguard data and return in format expected by quantum optimization code.
+    Load V data and return in format expected by quantum optimization code.
     
     Returns:
         Tuple of (n_assets, returns, risks, correlations, asset_names, data_source)
     """
     
-    data = load_vanguard_portfolio_data(n_assets=n_assets)
+    data = load_v_portfolio_data(n_assets=n_assets)
     
     return (
         len(data['returns']),
@@ -393,11 +393,11 @@ def get_quantum_optimization_data(n_assets: int = 20) -> Tuple:
 
 if __name__ == "__main__":
     # Test the data loader
-    print("Testing Vanguard Data Loader...")
+    print("Testing V Data Loader...")
     print("=" * 50)
-    
-    data = load_vanguard_portfolio_data(n_assets=20)
-    
+
+    data = load_v_portfolio_data(n_assets=20)
+
     print(f"\nData Loading Results:")
     print(f"  Source: {data['data_source']}")
     print(f"  Assets: {len(data['returns'])}")

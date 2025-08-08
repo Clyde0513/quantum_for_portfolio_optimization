@@ -18,7 +18,7 @@ import threading
 from multiprocessing import Pool, Manager
 import hashlib
 
-from vanguard_data_loader import load_vanguard_portfolio_data
+from current_progress.v_data_loader import load_v_portfolio_data
 
 
 print("=== Hardware-Optimized Quantum Portfolio Optimization ===\n")
@@ -255,17 +255,17 @@ class ResourceManager:
         
         return config
 
-# 6. Real Vanguard Portfolio Data Integration
+# 6. Real V Portfolio Data Integration
 
-# Load real Vanguard bond portfolio data
-print("=== Loading Real Vanguard Portfolio Data ===")
-from vanguard_data_loader import load_vanguard_portfolio_data
+# Load real V bond portfolio data
+print("=== Loading V Portfolio Data ===")
+from current_progress.v_data_loader import load_v_portfolio_data
 
 # Load portfolio data with desired number of assets for quantum optimization
 # For 31 qubits: Uncomment next line and comment the conservative line
 # n_assets_target = 31  # WARNING: Requires 17+ GB RAM, may cause out-of-memory errors
 n_assets_target = 24
-portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
+portfolio_data = load_v_portfolio_data(n_assets=n_assets_target)
 
 # Extract key portfolio information
 n = len(portfolio_data['returns'])  # Actual number of bonds loaded
@@ -288,7 +288,7 @@ print(f"Risk range: [{risk_measures.min():.3f}, {risk_measures.max():.3f}]")
 print(f"Sample bonds: {asset_names[:3]}")
 
 # Convert to quantum optimization parameters based on real bond characteristics
-# These parameters are derived from actual Vanguard bond properties
+# These parameters are derived from actual V bond properties
     
 # Market parameters derived from real expected returns and risks
 m = expected_returns * 100  # Convert to percentage scale for optimization
@@ -318,7 +318,7 @@ lambda_char = 200.0    # Risk characteristic penalty
 x_c = current_weights * n * 2  # Scale current weights to optimization range
 
 print(f"\n=== Quantum Optimization Problem Setup ===")
-print(f"Real Vanguard bonds: {n}, Target portfolio: {N}")
+print(f"V bonds: {n}, Target portfolio: {N}")
 print(f"Data source: {portfolio_data['data_source']}")
 print(f"Fund: {portfolio_info['fund_name']} (${portfolio_info['total_market_value']:,.0f})")
 
@@ -338,7 +338,7 @@ print(f"\nSample Real Bonds:")
 for i in range(min(5, n)):
     print(f"  {asset_names[i]}: Return={expected_returns[i]:.3f}, Risk={risk_measures[i]:.3f}")
 
-print(f"\nOptimization ready: {n} real Vanguard bonds → {N} quantum portfolio")
+print(f"\nOptimization ready: {n} V bonds → {N} quantum portfolio")
 
 # 7. Enhanced QUBO Construction with Real Correlation Data
 Q = np.zeros((n, n))
@@ -410,7 +410,7 @@ if state_memory_gb > available_memory_gb * 0.8:
     
     # Fallback to smaller problem
     n_assets_target = 24
-    portfolio_data = load_vanguard_portfolio_data(n_assets=n_assets_target)
+    portfolio_data = load_v_portfolio_data(n_assets=n_assets_target)
     n = len(portfolio_data['returns'])
     expected_returns = portfolio_data['returns']
     risk_measures = portfolio_data['risks']
@@ -782,7 +782,7 @@ for i, (cost, freq) in enumerate(top_quantum_solutions):
     print(f"Solution {i+1}: Cost = {cost:.2f}, Frequency = {freq}")
 
 
-# 16. Comprehensive Visualization and Analysis - Real Vanguard Data
+# 16. Comprehensive Visualization and Analysis - R Data
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.patches import Rectangle
@@ -795,10 +795,10 @@ sns.set_palette("husl")
 
 # Create output directory for plots
 import os
-plot_dir = "vanguard_quantum_analysis-2"
+plot_dir = "v_quantum_analysis-5"
 os.makedirs(plot_dir, exist_ok=True)
 
-print(f"\n=== Creating Real Vanguard Portfolio Analysis Plots ===")
+print(f"\n=== Creating Real V Portfolio Analysis Plots ===")
 print(f"Data: {portfolio_info['fund_name']} with {n} real bonds")
 print(f"Saving plots to: {plot_dir}/")
 
@@ -810,9 +810,9 @@ def save_plot(fig, filename, dpi=300):
     print(f"  Saved: {full_path}")
     return full_path
 
-# 1. Real Vanguard Portfolio Performance Dashboard
+# 1. V Portfolio Performance Dashboard
 fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
-title = f'Quantum vs Classical: Real Vanguard {portfolio_info["fund_name"]} Portfolio Optimization'
+title = f'Quantum vs Classical: Real V {portfolio_info["fund_name"]} Portfolio Optimization'
 fig.suptitle(title, fontsize=16, fontweight='bold')
 
 # Cost comparison
